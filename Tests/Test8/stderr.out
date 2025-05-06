@@ -1,2 +1,2 @@
-Heure renseignée au mauvais format : 29
-Veuillez fournir une heure entre 0 et 23.
+Paramètre attendu pour -t, mais obtenu : -3
+Paramètres invalide: Usage: ./analog [-g nomfichier.dot] [-e] [-u URL_Local] [-t heure] nomfichier.log

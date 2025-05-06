@@ -1,2 +1,1 @@
-Ce test permet de s'assurer du bon fonctionnement du top 10, donc de la méthode UpdateTop10() 
-et AfficherTop10().
+Ce test permet de s'assure du bon affichage du menu dans la console si l'utilisateur rentre le rôle "government official".

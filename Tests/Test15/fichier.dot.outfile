@@ -1,5 +1,0 @@
-digraph {
-node1 [label="/temps/choix.gif"];
-node0 [label="temps/3IF37.html"];
-node0 -> node1 [label="1"];
-}

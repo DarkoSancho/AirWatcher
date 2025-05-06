@@ -1,1 +1,1 @@
-Essai de sortie de graphe ( paramètre -g nomfichier.dot)
+Ce test permet de s'assure du bon affichage du menu dans la console si l'utilisateur rentre le rôle "government official" puis vérifie si le capteur 1 fonctionne correctement.
