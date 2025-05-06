@@ -1,0 +1,24 @@
+digraph {
+node11 [label="http://www.google.fr"];
+node8 [label="/temps/4IF20.html"];
+node6 [label="/temps/4IF17.html"];
+node4 [label="/temps/4IF18.html"];
+node7 [label="/temps/3IF38.html"];
+node5 [label="/temps/4IF19.html"];
+node3 [label="/temps/FondInsa.jpg"];
+node2 [label="/temps/style_emploi_du_temps.css"];
+node10 [label="/temps/3IF37.html"];
+node9 [label="/temps/"];
+node1 [label="/temps/4IF16.html"];
+node0 [label="/temps/4IF15.html"];
+node0 -> node1 [label="1"];
+node2 -> node3 [label="4"];
+node4 -> node5 [label="2"];
+node6 -> node4 [label="3"];
+node7 -> node0 [label="4"];
+node5 -> node8 [label="4"];
+node9 -> node10 [label="1"];
+node10 -> node7 [label="2"];
+node1 -> node6 [label="5"];
+node11 -> node9 [label="4"];
+}
