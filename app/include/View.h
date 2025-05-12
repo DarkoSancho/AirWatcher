@@ -1,7 +1,7 @@
-//---------- Interface de la classe <Controller> (fichier Controller.h) ----------------
+//---------- Interface de la classe <Controller> (fichier View.h) ----------------
 
-#if ! defined ( CONTROLLER_H )
-#define CONTROLLER_H
+#if ! defined ( VIEW_H )
+#define VIEW_H
 
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
@@ -22,7 +22,7 @@ using namespace std;
 #include <ctime>
 //------------------------------------------------------------------------
 
-class Controller
+class View
 {
 //----------------------------------------------------------------- PUBLIC
 
@@ -30,25 +30,18 @@ public:
 //----------------------------------------------------- Méthodes publiques
    bool selectFunctionality (int option) ; 
    void mainLoop () ; 
-   // authentification ? 
-
-    bool signInUser (string key ) ; 
-
-
+    
 
 //-------------------------------------------- Constructeurs - destructeur
-    Controller ( );
+    View ( );
 
-    virtual ~Controller ( );
+    virtual ~View ( );
 
 //------------------------------------------------------------------ PRIVE
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    Model model ;
-    View view ; 
-    
-    
+    Model model ; 
      
 
 
@@ -57,6 +50,6 @@ protected:
 
 };
 
-//-------------------------------- Autres définitions dépendantes de <Controller>
+//-------------------------------- Autres définitions dépendantes de <View>
 
-#endif // CONTROLLER_H;
+#endif // VIEW_H;
