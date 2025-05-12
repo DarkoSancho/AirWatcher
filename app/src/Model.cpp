@@ -168,8 +168,8 @@ bool Model::loadCleaners(string pathCleanerCSV)
             cleaner.setCleanerId(row[0]);
             cleaner.setLatitude(stof(row[1])); // "stof" convertie une string en float
             cleaner.setLongitude(stof(row[2])); 
-            cleaner.setStartTime(row[3]);
-            cleaner.setEndTime(row[4]);
+            cleaner.setStartTime(row[3]); // NAM : Asmae je dois changer ça
+            cleaner.setEndTime(row[4]); // NAM : Asmae je dois changer ça avec la méthode date de Tom 
             this->cleaners[row[0]] = cleaner;
         }
     }
