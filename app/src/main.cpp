@@ -2,11 +2,9 @@
 #include <map>
 #include <string>
 #include "Model.h"
-
+#include "Date.h"
 using namespace std;
-
-int main()
-{
+void mainAsmae(){
     Model model; // Appel au constructeur, les fichiers CSV sont chargés ici car le constructeur de model inclut le chargement
 
     // Test 1 : Vérifier si les capteurs sont bien chargés depuis le fichier CSV "Sensors"
@@ -82,6 +80,16 @@ int main()
     
     // Convertir en format lisible
     cout << "Date/heure locale : " << ctime(&now);
+}
 
+void mainTom(){
+    string S = "2019-01-01 12:00:00";
+    Date D = Date(S);
+    cout<<D<<D.getHeure()<<endl;
+}
+
+int main()
+{
+    mainTom();
     return 0;
 }
