@@ -11,6 +11,7 @@
 #include <vector> 
 using namespace std;
 
+#include "Model.h"
 #include "Sensor.h"
 #include "Attribute.h"
 #include "Measurement.h"
@@ -26,7 +27,9 @@ class Controller
 
 public:
 //----------------------------------------------------- Méthodes publiques
-   
+   bool selectFunctionality (int option) ; 
+   void mainLoop () ; 
+
 
 //-------------------------------------------- Constructeurs - destructeur
     Controller ( );
@@ -37,7 +40,8 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-
+    Model model ; 
+    //View view ; 
 
 
 //----------------------------------------------------- Attributs protégés
