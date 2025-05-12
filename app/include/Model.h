@@ -17,7 +17,7 @@ using namespace std;
 #include "Provider.h"
 #include "Cleaner.h"
 #include "User.h"
-
+#include <ctime>
 //------------------------------------------------------------------------
 
 class Model
@@ -36,6 +36,7 @@ public:
 
     vector<User> getAllUsers();
 
+    float airQualityGeo (float latitude , float longitude , float radius =0 , time_t start_date , time_t end_date) ;  
 
 
 //-------------------------------------------- Constructeurs - destructeur
