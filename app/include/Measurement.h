@@ -13,7 +13,7 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
-#include <ctime>
+#include "Date.h"
 
 using namespace std;
 
@@ -33,7 +33,7 @@ class Measurement
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    string getTimestamp() const;
+    Date getTimestamp() const;
     // Mode d'emploi :
     //
     // Contrat :
@@ -57,7 +57,7 @@ public:
     // Contrat :
     //
 
-    void setTimestamp(string timestamp);
+    void setTimestamp(Date timestamp);
     // Mode d'emploi :
     //
     // Contrat :
@@ -89,7 +89,7 @@ public:
     // Contrat :
     //
 
-    Measurement ( const string timestamp, const string sensorId, const string attributeId, const float value);
+    Measurement ( const Date timestamp, const string sensorId, const string attributeId, const float value);
     // Mode d'emploi :
     //
     // Contrat :
@@ -107,7 +107,7 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-string timestamp; 
+Date timestamp; 
 string sensorID;
 string attributeID;
 float value;

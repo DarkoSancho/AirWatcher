@@ -23,7 +23,7 @@ using namespace std;
 
 //----------------------------------------------------- Méthodes publiques
 
-string Measurement::getTimestamp() const
+Date Measurement::getTimestamp() const
 {
     return timestamp;
 }
@@ -43,7 +43,7 @@ float Measurement::getValue() const
     return value;
 }
 
-void Measurement::setTimestamp(string timestamp)
+void Measurement::setTimestamp(Date timestamp)
 {
     this->timestamp = timestamp;
 }
@@ -70,7 +70,7 @@ Measurement::Measurement()
     // Constructeur par défaut
 }
 
-Measurement::Measurement(const string timestamp, const string sensorId, const string attributeId, const float value)
+Measurement::Measurement(const Date timestamp, const string sensorId, const string attributeId, const float value)
     : timestamp(timestamp), sensorID(sensorId), attributeID(attributeId), value(value)
 {
 }
