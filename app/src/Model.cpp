@@ -320,10 +320,10 @@ vector<Measurement> Model::getMeasurements(string sensorId, int count, string at
     return measurements;
 }
 
-    float Model::airQualityGeo (float latitude , float logitude , float radius =0 , time_t start_date , time_t end_date) 
-    {
-        Sensor sensorSpecifique ; 
+    // float Model::airQualityGeo (float latitude , float logitude , float radius =0 , time_t start_date , time_t end_date) 
+    // {
+    //     Sensor sensorSpecifique ; 
         
 
         
-    }
+    // }

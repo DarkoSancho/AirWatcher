@@ -116,7 +116,7 @@ bool Date::operator != ( const Date & uneDate ) const
 
 ostream & operator << ( ostream & os, const Date & date )
 {
-    os << setfill('0') << setw(2) << date.jour << "/"
+    os << setw(2) << date.jour << "/"
        << setw(2) << date.mois << "/"
        << setw(4) << date.annee << " "
        << setw(2) << date.heure << ":"

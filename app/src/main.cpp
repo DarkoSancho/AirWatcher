@@ -85,7 +85,7 @@ void mainAsmae(){
 void mainTom(){
     string S = "2019-01-01 12:00:00";
     Date D = Date(S);
-    cout<<D<<D.getHeure()<<endl;
+    cout<<D.getDay()<<endl;
 }
 
 int main()
