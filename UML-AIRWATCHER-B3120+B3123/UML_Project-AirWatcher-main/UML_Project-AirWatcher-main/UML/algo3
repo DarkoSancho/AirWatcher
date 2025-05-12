@@ -1,0 +1,49 @@
+\documentclass[12pt]{article}
+\usepackage{fullpage}
+\usepackage{siunitx}
+\usepackage{helvet}
+\usepackage{fancyhdr,graphicx,amsmath,amssymb}
+\usepackage[ruled,vlined]{algorithm2e}
+\begin{document} 
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\textbf{Description :} This algorithm evaluates the reliability of data from private sensors, identifying signs of tampering or malfunction. If deemed unreliable, the data is marked as invalid and excluded from future queries.\;
+\textbf{Input :} 
+Data: file csv\;
+Tolerance: float csv\;
+
+\textbf{Output :} 
+List of Sensor objects\;
+
+file \textbf{$\leftarrow$} Open csvFile\;
+sensorDict \textbf{$\leftarrow$} Empty Dictionary\;
+listInformation \textbf{$\leftarrow$} Empty List\;
+listOfpotentialunreliablesensors \textbf{$\leftarrow$} Empty List\;
+
+
+\ForEach{line in file}{
+    sensorDetails \textbf{$\leftarrow$} Split line by ','\;
+    sensorID \textbf{$\leftarrow$} sensorDetails[0]\;
+    Latitude \textbf{$\leftarrow$} ConvertToFloat(sensorDetails[1])\;
+    Longitude \textbf{$\leftarrow$} ConvertToFloat(sensorDetails[2])\;
+    Time frame \textbf{$\leftarrow$} ConvertToTimestamp(sensorDetails[3])\;
+    airQualityValue \textbf{$\leftarrow$} ConvertToFloat(sensorDetails[4])\;
+    listInformation[0] \textbf{$\leftarrow$} Latitude\;
+    listInformation[1] \textbf{$\leftarrow$} Longitude\;
+    listInformation[2] \textbf{$\leftarrow$} Time frame\;
+    listInformation[3] \textbf{$\leftarrow$} airQualityValue\;
+    sensorDict[sensorID] \textbf{$\leftarrow$} listInformation\;
+}
+\ForEach{element in sensorDict}{
+  \If{(abs(Calcul mean(element[1][0],element[1][1],1000,element[1][2])-element[1][3]) is bigger than Tolerance)}{
+    Append element[0] to listOfPotentialUnreliableSensors\;
+  }
+}
+
+Return listOfpotentialunreliablesensors\;
+
+\caption{Identify malfunctioning sensors}
+\end{algorithm}
+
+\end{document}

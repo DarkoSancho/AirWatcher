@@ -1,0 +1,53 @@
+\documentclass[12pt]{article}
+\usepackage{fullpage}
+\usepackage{siunitx}
+\usepackage{helvet}
+\usepackage{fancyhdr,graphicx,amsmath,amssymb}
+\usepackage[ruled,vlined]{algorithm2e}
+\begin{document} 
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\textbf{Description :} Calculates the mean air quality within a circular area specified by the user, using the time bounds provided to determine the period for calculation 
+\newline\newline
+\textbf{Input :} 
+Latitude: float\;
+Longitude: float\;
+Radius: float\;
+Time frame: Timestamp;
+\newline\newline
+\textbf{Output :} 
+Mean air quality : float
+\newline
+
+list of air quality measurements \textbf{$\leftarrow$} [ ]\;
+sum 
+\textbf{$\leftarrow$} 0\;
+ 
+count 
+\textbf{$\leftarrow$} 0;
+
+\ForEach{air quality measurement in the Time Frame}{
+  \If{the measurement is within a radius of Radius around (Longitude, Latitude)}{
+    Add the measurement to the list of measurements\;
+  }
+}
+
+\If{the list of measurements is not empty}{
+  \ForEach{measurement in the list of measurements}{
+    sum \textbf{$\leftarrow$} sum + air quality of the measurement\;
+    count \textbf{$\leftarrow$} count + 1\;
+  }
+  mean \textbf{$\leftarrow$} sum / count\;
+}
+\Else{
+  No air quality measurements available for the specified period and location\;
+  Initialize mean to a default value or return an error\;
+}
+
+Return mean\;
+
+\caption{Calculate Mean Air Quality}
+\end{algorithm}
+
+\end{document}
