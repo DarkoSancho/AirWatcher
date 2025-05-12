@@ -18,7 +18,7 @@ using namespace std;
 #include "Provider.h"
 #include "Cleaner.h"
 #include "User.h"
-#include "View.h"
+//#include "View.h"
 #include <ctime>
 //------------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ public:
 protected:
 //----------------------------------------------------- Méthodes protégées
     Model model ;
-    View view ; 
+    //View view ; 
     
     
      

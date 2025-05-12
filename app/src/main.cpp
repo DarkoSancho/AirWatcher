@@ -85,7 +85,10 @@ void mainAsmae(){
 void mainTom(){
     string S = "2019-01-01 12:00:00";
     Date D = Date(S);
-    cout<<D.getDay()<<endl;
+    string Sp = "2019-05-22 12:00:00";
+    Date Dp = Date (S);
+    bool test = (D == Dp);
+    cout<<test<<endl;
 }
 
 int main()

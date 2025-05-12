@@ -50,7 +50,10 @@ public:
     Date & operator = ( const Date & uneDate );
     bool operator == ( const Date & uneDate ) const;
     bool operator != ( const Date & uneDate ) const;
-
+    bool operator <  ( const Date & uneDate ) const;
+    bool operator >  ( const Date & uneDate ) const;
+    bool operator <= ( const Date & uneDate ) const;
+    bool operator >= ( const Date & uneDate ) const;
     friend std::ostream & operator << ( std::ostream & os, const Date & date );
 
 //-------------------------------------------- Constructeurs - destructeur

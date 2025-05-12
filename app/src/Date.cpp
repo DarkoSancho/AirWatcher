@@ -114,6 +114,38 @@ bool Date::operator != ( const Date & uneDate ) const
     return !( *this == uneDate );
 }
 
+bool Date::operator < ( const Date & uneDate ) const
+{
+    if (annee != uneDate.annee) {
+        return annee < uneDate.annee;
+    }
+    if (mois  != uneDate.mois){  
+        return mois   < uneDate.mois;
+    }
+    if (jour  != uneDate.jour){  
+        return jour   < uneDate.jour;
+    }
+    if (heure != uneDate.heure){ 
+        return heure  < uneDate.heure;
+    }
+    if (minute != uneDate.minute) {
+        return minute < uneDate.minute;
+    }
+    return seconde < uneDate.seconde;
+}
+
+bool Date::operator <= ( const Date & uneDate) const{
+    return !(uneDate < *this);
+}
+
+bool Date::operator > ( const Date & uneDate) const{
+    return uneDate>*this;
+}
+
+bool Date::operator >= ( const Date & uneDate) const{
+    return !(*this < uneDate);
+}
+
 ostream & operator << ( ostream & os, const Date & date )
 {
     os << setw(2) << date.jour << "/"

@@ -43,12 +43,12 @@ using namespace std;
 
 //-------------------------------------------- Constructeurs - destructeur
 
-Controller::Controller ( )
-// Algorithme :
-//
-{
-    #ifdef MAP
-        cout << "Appel au constructeur de <Controller>" << endl;
-    #endif
-}
+// Controller::Controller ( )
+// // Algorithme :
+// //
+// {
+//     #ifdef MAP
+//         cout << "Appel au constructeur de <Controller>" << endl;
+//     #endif
+// }
 

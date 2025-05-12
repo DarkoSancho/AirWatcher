@@ -36,8 +36,11 @@ public:
 
     vector<User> getAllUsers();
 
+
+
     //float airQualityGeo (float latitude , float longitude , float radius =0 , time_t start_date , time_t end_date) ;  
 
+    //<string, int > getData
 
 //-------------------------------------------- Constructeurs - destructeur
     Model ( );
