@@ -6,7 +6,9 @@
 CXX = g++
 
 #Option de compilation
-CXXFLAGS = -ansi -pedantic -Wall -std=c++17   -I$(INCLUDE_DIR)
+#CXXFLAGS = -ansi -pedantic -Wall -std=c++17   -I$(INCLUDE_DIR)
+CXXFLAGS =  -I$(INCLUDE_DIR)
+
 
 #nom de l'executable
 TARGET = AirWatcher

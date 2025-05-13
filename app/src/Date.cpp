@@ -148,14 +148,15 @@ bool Date::operator >= ( const Date & uneDate) const{
 
 ostream & operator << ( ostream & os, const Date & date )
 {
-    os << setw(2) << date.jour << "/"
-       << setw(2) << date.mois << "/"
-       << setw(4) << date.annee << " "
-       << setw(2) << date.heure << ":"
-       << setw(2) << date.minute << ":"
-       << setw(2) << date.seconde;
+    os << std::setfill('0') << std::setw(2) << date.jour << "/"
+       << std::setfill('0') << std::setw(2) << date.mois << "/"
+       << std::setfill('0') << std::setw(4) << date.annee << " "
+       << std::setfill('0') << std::setw(2) << date.heure << ":"
+       << std::setfill('0') << std::setw(2) << date.minute << ":"
+       << std::setfill('0') << std::setw(2) << date.seconde;
     return os;
 }
+
 
 //-------------------------------------------- Constructeurs - destructeur
 Date::Date ( const Date & uneDate )

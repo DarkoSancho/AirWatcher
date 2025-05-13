@@ -14,25 +14,26 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include <ctime>
 #include <cerrno>
-#include <time.h>
 #include <string.h>
 #include <iomanip>
 #include <memory>
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <climits>
+#include <cmath>
 //------------------------------------------------------ Include personnel
 #include "Model.h"
 #include "PrivateIndividual.h"
+#include "Date.h"
+#include "util.h"
 
 
 // Fonctions utilitaires
 
 
 //------------------------------------------------------------- Constantes
-
 //----------------------------------------------------------------- PUBLIC
 
 using namespace std;
@@ -288,8 +289,8 @@ map<string, Sensor> Model::getAllSensors()
 
 
 
-// Méthode qui renvoie les measurements associées à un capteur donné, pour un attribut donné (O2,NO2,SO2,PM10)
-vector<Measurement> Model::getMeasurements(string sensorId, int count, string attribute)
+// Méthode qui renvoie les measurements associées à un capteur donné, pour un attribut donné (O2,NO2,SO2,PM10), si on ne veut pas de count pardéfault cela vaut -1
+vector<Measurement> Model::getMeasurements(string sensorId , string attribute, int count)
 {
     vector<Measurement> measurements;
 
@@ -320,10 +321,191 @@ vector<Measurement> Model::getMeasurements(string sensorId, int count, string at
     return measurements;
 }
 
-    // float Model::airQualityGeo (float latitude , float logitude , float radius =0 , time_t start_date , time_t end_date) 
+
+Stats Model::getData(string sensorId, Date startDate, Date EndDate, int Th03, int ThNO2, int ThSO2, int ThPM10 ){
+ 
+    Stats Stat;
+    Util util;
+    vector<Measurement> resultsO3 = getMeasurements( sensorId, "03");
+    vector<Measurement> resultsNO2 = getMeasurements( sensorId, "NO2");
+    vector<Measurement> resultsSO2 = getMeasurements( sensorId, "SO2");    
+    vector<Measurement> resultsPM10 = getMeasurements( sensorId, "PM10");
+
+    vector<float> values03, valuesNO2, valuesSO2, valuesPM10;
+    for (const Measurement& m : resultsO3) {
+        if (m.getTimestamp() <= EndDate && m.getTimestamp() >= startDate) {
+
+            values03.push_back(m.getValue());
+        }
+    }
+    for (const Measurement& m : resultsNO2) {
+        if (m.getTimestamp() <= EndDate && m.getTimestamp() >= startDate) {
+            valuesNO2.push_back(m.getValue());
+        }
+    }
+    for (const Measurement& m : resultsSO2) {
+        if (m.getTimestamp() <= EndDate && m.getTimestamp() >= startDate) {            
+            valuesSO2.push_back(m.getValue());
+    }
+    }
+    for (const Measurement& m : resultsPM10) {
+        if (m.getTimestamp() <= EndDate && m.getTimestamp() >= startDate) {
+        valuesPM10.push_back(m.getValue());
+        }
+    }
+
+    Stat.average = {
+        { "O3",   values03.empty()   ? -1 : util.getAverage(values03) },
+        { "NO2",  valuesNO2.empty()  ? -1 : util.getAverage(valuesNO2) },
+        { "SO2",  valuesSO2.empty()  ? -1 : util.getAverage(valuesSO2) },
+        { "PM10", valuesPM10.empty() ? -1 : util.getAverage(valuesPM10) }
+    };
+
+    Stat.maximum = {
+        { "O3",   values03.empty()   ? -1 : util.getMax(values03) },
+        { "NO2",  valuesNO2.empty()  ? -1 : util.getMax(valuesNO2) },
+        { "SO2",  valuesSO2.empty()  ? -1 : util.getMax(valuesSO2) },
+        { "PM10", valuesPM10.empty() ? -1 : util.getMax(valuesPM10) }
+    };
+
+    Stat.minimum = {
+        { "O3",   values03.empty()   ? -1 : util.getMin(values03) },
+        { "NO2",  valuesNO2.empty()  ? -1 : util.getMin(valuesNO2) },
+        { "SO2",  valuesSO2.empty()  ? -1 : util.getMin(valuesSO2) },
+        { "PM10", valuesPM10.empty() ? -1 : util.getMin(valuesPM10) }
+    };
+
+    Stat.sdeviation = {
+        { "O3",   values03.empty()   ? -1 : util.getSdeviation(values03) },
+        { "NO2",  valuesNO2.empty()  ? -1 : util.getSdeviation(valuesNO2) },
+        { "SO2",  valuesSO2.empty()  ? -1 : util.getSdeviation(valuesSO2) },
+        { "PM10", valuesPM10.empty() ? -1 : util.getSdeviation(valuesPM10) }
+    };
+
+    Stat.excedances = {
+        { "O3",   values03.empty()   ? -1 : util.getNExceedances(values03, Th03) },
+        { "NO2",  valuesNO2.empty()  ? -1 : util.getNExceedances(valuesNO2, ThNO2) },
+        { "SO2",  valuesSO2.empty()  ? -1 : util.getNExceedances(valuesSO2, ThSO2) },
+        { "PM10", valuesPM10.empty() ? -1 : util.getNExceedances(valuesPM10, ThPM10) }
+    };
+    // Work on amtmo map:
+    map<Date, float> atmo;
+
+    map<Date, list<int>> valueDayO3;
+    map<Date, list<int>> valueDayNO2;
+    map<Date, list<int>> valueDaySO2;
+    map<Date, list<int>> valueDayPM10;
+    for (const Measurement& m : resultsO3) {
+        if (valueDayO3.find(m.getTimestamp()) == valueDayO3.end()) {
+            valueDayO3[m.getTimestamp()] = {util.indiceO3(m.getValue())};
+
+            if (atmo.find(m.getTimestamp())  == atmo.end()){
+                atmo[m.getTimestamp()] = 0;
+            }
+        }
+        else{
+            valueDayO3[m.getTimestamp()].push_back(util.indiceO3(m.getValue()));
+        }
+    }
+ 
+    for (const Measurement& m : resultsNO2) {
+    if (valueDayNO2.find(m.getTimestamp()) == valueDayNO2.end()) {
+        valueDayNO2[m.getTimestamp()] = {util.indiceNO2(m.getValue())};
+        if (atmo.find(m.getTimestamp())  == atmo.end()){
+            atmo[m.getTimestamp()] = 0;
+        }
+        } 
+    else {
+        valueDayNO2[m.getTimestamp()].push_back(util.indiceNO2(m.getValue()));
+        }
+    }
+
+    for (const Measurement& m : resultsSO2) {
+        if (valueDaySO2.find(m.getTimestamp()) == valueDaySO2.end()) {
+            valueDaySO2[m.getTimestamp()] = {util.indiceSO2(m.getValue())};
+            if (atmo.find(m.getTimestamp())  == atmo.end()){
+                atmo[m.getTimestamp()] = 0;
+            }
+        } else {
+            valueDaySO2[m.getTimestamp()].push_back(util.indiceSO2(m.getValue()));
+        }
+    }
+    for (const Measurement& m : resultsPM10) {
+        if (valueDayPM10.find(m.getTimestamp()) == valueDayPM10.end()) {
+            valueDayPM10[m.getTimestamp()] = {util.indicePM10(m.getValue())};
+            if (atmo.find(m.getTimestamp())  == atmo.end()){
+                atmo[m.getTimestamp()] = 0;
+            }
+            
+        } else {
+            valueDayPM10[m.getTimestamp()].push_back(util.indicePM10(m.getValue()));
+        }
+    }
+
+    // Calcul de l'ATMO
+    map<Date, float> atmoO3;
+    map<Date, float> atmoNO2;
+    map<Date, float> atmoSO2;
+    map<Date, float> atmoPM10;
+ 
+
+    for (auto it= valueDayO3.begin(); it!= valueDayO3.end(); it++){
+        atmoO3[it->first] = util.getAverage(it->second);
+    }
+
+    for (auto it = valueDayNO2.begin(); it != valueDayNO2.end(); ++it) {
+        atmoNO2[it->first] = util.getAverage(it->second);
+    }
+    for (auto it = valueDaySO2.begin(); it != valueDaySO2.end(); ++it) {
+        atmoSO2[it->first] = util.getAverage(it->second);
+    }
+    for (auto it = valueDayPM10.begin(); it != valueDayPM10.end(); ++it) {
+        atmoPM10[it->first] = util.getAverage(it->second);
+    }
+    // Calcul de l'ATMO
+
+    for (auto it = atmo.begin(); it!= atmo.end(); ++it){
+        Date date = it-> first;
+        list<float> value;
+        if (atmoO3.find(date) != atmoO3.end()) {
+            value.push_back(atmoO3[date]);
+        }
+        if (atmoNO2.find(date) != atmoNO2.end()) {
+            value.push_back(atmoNO2[date]);
+        }
+        if (atmoSO2.find(date) != atmoSO2.end()) {
+            value.push_back(atmoSO2[date]);
+        }
+        if (atmoPM10.find(date) != atmoPM10.end()) {
+            value.push_back(atmoPM10[date]);
+        }
+        atmo[date] = util.getMax(value);
+    }
+    map<Date, int> atmoRound;
+    for (const auto& pair : atmo) {
+        atmoRound[pair.first] = static_cast<int>(std::round(pair.second));
+    }
+    Stat.atmo = atmoRound;
+
+    Stat.matmo = util.getMin(atmoRound);
+
+    Stat.Matmo = util.getMax(atmoRound); 
+
+    return Stat;
+  
+}
+
+
+    
+
+
+
+// float Model::airQualityGeo (float latitude , float logitude , float radius =0 , time_t start_date , time_t end_date) 
     // {
     //     Sensor sensorSpecifique ; 
         
 
         
     // }
+
+
