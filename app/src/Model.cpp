@@ -245,6 +245,159 @@ bool Model::loadSensorsData(string pathSensorCSV, string pathMeasureCSV, string 
 }
 
 
+bool Model::isSensorReliable(string sensorId)
+{
+    bool reliability = true;
+    Sensor sensor_reference = getSensor(sensorId);
+    float lat = sensor_reference.getLatitude();
+    float long = sensor_reference.getLongitude();
+
+    // Valeur fixe pour l'écart-type maximum acceptable
+    float max_std_deviation = 50.0;
+    
+    // Valeurs max acceptables
+    float max_acceptable_O3 = 100.0;  
+    float max_acceptable_NO2 = 100.0;  
+    float max_acceptable_SO2 = 100.0; 
+    float max_acceptable_PM10 = 100.0; 
+    
+
+    // Récupération des mesures pour chaque attribut
+    vector<Measurement> resultsO3 = getAllMeasurementsForAttribute("O3");
+    vector<Measurement> resultsNO2 = getAllMeasurementsForAttribute("NO2");
+    vector<Measurement> resultsSO2 = getAllMeasurementsForAttribute("SO2");
+    vector<Measurement> resultsPM10 = getAllMeasurementsForAttribute("PM10");
+
+    // Extraire les valeurs pour calculer l'écart-type
+    vector<float> valuesO3, valuesNO2, valuesSO2, valuesPM10;
+    for (const Measurement& m : resultsO3) {
+        string sensorId_compare = m.getSensorId();
+        Sensor sensor_compare = getSensor(sensorId_compare);
+        float lat_compare = sensor_compare.getLatitude();
+        float long_compare = sensor_compare.getLongitude();
+        if (calculateDistance(lat, long, lat_compare, long_compare) <= 5)
+        {
+            valuesO3.push_back(m.getValue());
+        }
+        
+    }
+    for (const Measurement& m : resultsNO2) {
+        string sensorId_compare = m.getSensorId();
+        Sensor sensor_compare = getSensor(sensorId_compare);
+        float lat_compare = sensor_compare.getLatitude();
+        float long_compare = sensor_compare.getLongitude();
+        if (calculateDistance(lat, long, lat_compare, long_compare) <= 5)
+        {
+            valuesNO2.push_back(m.getValue());
+        }
+    }
+    for (const Measurement& m : resultsSO2) {
+        string sensorId_compare = m.getSensorId();
+        Sensor sensor_compare = getSensor(sensorId_compare);
+        float lat_compare = sensor_compare.getLatitude();
+        float long_compare = sensor_compare.getLongitude();
+        if (calculateDistance(lat, long, lat_compare, long_compare) <= 5)
+        {
+            valuesSO2.push_back(m.getValue());
+        }
+    }
+    for (const Measurement& m : resultsPM10) {
+        string sensorId_compare = m.getSensorId();
+        Sensor sensor_compare = getSensor(sensorId_compare);
+        float lat_compare = sensor_compare.getLatitude();
+        float long_compare = sensor_compare.getLongitude();
+        if (calculateDistance(lat, long, lat_compare, long_compare) <= 5)
+        {
+            valuesPM10.push_back(m.getValue());
+        }
+    }
+
+    // Utiliser l'objet Util pour calculer les écarts-types
+    Util util;
+    
+    // Ne calculer l'écart-type que s'il y a des mesures disponibles
+    float stdDevO3 = valuesO3.empty() ? 0 : util.getSdeviation(valuesO3);
+    float stdDevNO2 = valuesNO2.empty() ? 0 : util.getSdeviation(valuesNO2);
+    float stdDevSO2 = valuesSO2.empty() ? 0 : util.getSdeviation(valuesSO2);
+    float stdDevPM10 = valuesPM10.empty() ? 0 : util.getSdeviation(valuesPM10);
+
+    // Vérifier si les écarts-types sont en dessous du seuil maximum 
+    if ((!valuesO3.empty() && stdDevO3 > max_std_deviation) || 
+        (!valuesNO2.empty() && stdDevNO2 > max_std_deviation) || 
+        (!valuesSO2.empty() && stdDevSO2 > max_std_deviation) || 
+        (!valuesPM10.empty() && stdDevPM10 > max_std_deviation)) {
+        reliability = false;
+    }
+
+    // Vérifier si les valeurs sont dans des plages réalistes
+    if (!valuesO3.empty()) {
+        float maxO3 = util.getMax(valuesO3);
+        if (maxO3 > max_acceptable_O3) {
+            reliability = false;
+        }
+    }
+    
+    if (!valuesNO2.empty()) 
+    {
+        float maxNO2 = util.getMax(valuesNO2);
+        if (maxNO2 > max_acceptable_NO2) {
+            reliability = false;
+        }
+    }
+    
+    if (!valuesSO2.empty()) 
+    {
+        float maxSO2 = util.getMax(valuesSO2);
+        if (maxSO2 > max_acceptable_SO2) {
+            reliability = false;
+        }
+    }
+    
+    if (!valuesPM10.empty()) 
+    {
+        float maxPM10 = util.getMax(valuesPM10);
+        if (maxPM10 > max_acceptable_PM10) {
+            reliability = false;
+        }
+    }
+
+    return reliability;
+}
+
+
+float Model::calculateDistance(float lat1, float lon1, float lat2, float lon2) {
+    const float R = 6371.0; // Rayon de la Terre en kilomètres
+    
+    // Conversion des latitudes et longitudes en radians
+    float latRad1 = lat1 * M_PI / 180.0;
+    float lonRad1 = lon1 * M_PI / 180.0;
+    float latRad2 = lat2 * M_PI / 180.0;
+    float lonRad2 = lon2 * M_PI / 180.0;
+    
+    // Différences de coordonnées
+    float dLat = latRad2 - latRad1;
+    float dLon = lonRad2 - lonRad1;
+    
+    // Formule de Haversine
+    float a = sin(dLat/2) * sin(dLat/2) + cos(latRad1) * cos(latRad2) * sin(dLon/2) * sin(dLon/2);
+    float c = 2 * atan2(sqrt(a), sqrt(1-a));
+    float distance = R * c;
+    
+    return distance;
+}
+
+vector<Measurement> Model::getAllMeasurementsForAttribute(string attribute)
+{
+    vector<Measurement> result;
+    for (const auto& pair : sensors) {
+        const string& sensorId = pair.first;
+        vector<Measurement> partial = getMeasurements(sensorId, attribute);
+        result.insert(result.end(), partial.begin(), partial.end());
+    }
+    return result;
+}
+
+
 //Mathode qui renvoie un sensor grâce à son ID depuis la map
 Sensor Model::getSensor(string sensorId){
     if (this->sensors.find(sensorId) == this->sensors.end())
