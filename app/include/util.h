@@ -22,6 +22,8 @@
 //
 //------------------------------------------------------------------------
 #include "Date.h"
+#include <vector>
+#include <list>
 class Util 
 {
 //----------------------------------------------------------------- PUBLIC
@@ -51,7 +53,7 @@ public:
 
     float getNExceedances(vector<float> vector, float th);
 
-    float getATMO(vector<float> vector);
+    //float getATMO(vector<float> vector);
 
     int indiceO3(float v); 
 
@@ -60,6 +62,8 @@ public:
     int indiceSO2(float v);
 
     int indicePM10(float v);
+    
+    int indiceATMO ( float o3 , float so2 , float no2 ,float pm10  ) ;
 //------------------------------------------------- Surcharge d'opérateurs
 
 

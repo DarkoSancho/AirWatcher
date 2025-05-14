@@ -21,7 +21,7 @@ using namespace std;
 #include <list>
 #include <stdexcept>
 //------------------------------------------------------ Include personnel
-#include "util.h"
+#include "Util.h"
 #include "Date.h"
 //------------------------------------------------------------- Constantes
 
@@ -177,6 +177,21 @@ int Util::indicePM10(float v) {
     else if (v <= 79) return 9;
     else return 10;
 }
+
+int Util::indiceATMO ( float o3 , float so2 , float no2 ,float pm10  ) 
+{   
+    int iO3 = indiceO3(o3) ; 
+    int iSO2 = indiceSO2(so2) ; 
+    int iNO2 = indiceNO2(no2) ; 
+    int iPM10 = indicePM10(pm10) ; 
+    int indice = iO3;
+    if (iSO2 > indice) indice = iSO2;
+    if (iNO2 > indice) indice = iNO2;
+    if (iPM10 > indice) indice = iPM10;
+
+    return indice;
+}
+
 
 //-------------------------------------------- Constructeurs - destructeur
 

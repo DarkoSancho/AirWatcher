@@ -10,6 +10,7 @@
 #include <map>
 #include <vector> 
 #include <climits>
+#include <algorithm>
 using namespace std;
 
 #include "Sensor.h"
@@ -49,9 +50,7 @@ public:
 
     vector<User> getAllUsers();
 
-
-
-    //float airQualityGeo (float latitude , float longitude , float radius =0 , time_t start_date , time_t end_date) ;  
+    int airQualityGeo (float latitude , float longitude ,  Date start_date , Date end_date ,float radius =0 ) ;  
 
     Stats getData(string sensorId, Date startDate, Date EndDate, int Th03 = -1, int ThNO2 = -1, int ThSO2 = -1, int ThPM10 = -1);
 
@@ -83,7 +82,7 @@ protected:
 //----------------------------------------------------- Attributs protégés
 map<string,Sensor> sensors; 
 map<string,Attribute> attributes;
-map<string,vector<Measurement>> measurements;
+map<string,vector<Measurement> > measurements;
 map<string,Provider> providers;
 map<string,Cleaner> cleaners;
 map<string,User> users;

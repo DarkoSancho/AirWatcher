@@ -27,7 +27,7 @@
 #include "Model.h"
 #include "PrivateIndividual.h"
 #include "Date.h"
-#include "util.h"
+#include "Util.h"
 
 
 // Fonctions utilitaires
@@ -391,10 +391,10 @@ Stats Model::getData(string sensorId, Date startDate, Date EndDate, int Th03, in
     // Work on amtmo map:
     map<Date, float> atmo;
 
-    map<Date, list<int>> valueDayO3;
-    map<Date, list<int>> valueDayNO2;
-    map<Date, list<int>> valueDaySO2;
-    map<Date, list<int>> valueDayPM10;
+    map<Date, list<int> > valueDayO3;
+    map<Date, list<int> > valueDayNO2;
+    map<Date, list<int> > valueDaySO2;
+    map<Date, list<int> > valueDayPM10;
     for (const Measurement& m : resultsO3) {
         if (valueDayO3.find(m.getTimestamp()) == valueDayO3.end()) {
             valueDayO3[m.getTimestamp()] = {util.indiceO3(m.getValue())};
@@ -494,18 +494,69 @@ Stats Model::getData(string sensorId, Date startDate, Date EndDate, int Th03, in
     return Stat;
   
 }
-
-
+int Model::airQualityGeo (float latitude , float longitude ,  Date start_date , Date end_date , float radius) 
+    {
+        
+        Util util ; 
+        
+        vector<Sensor> sensorsSpecifiques ; 
+         
+        map<string,Sensor>::iterator it ; 
+         
+        for (it = sensors.begin() ; it != sensors.end() ; it++ )
+        {
+            if (latitude - radius <= it->second.getLatitude() && latitude + radius >= it->second.getLatitude() 
+                && longitude - radius <= it->second.getLongitude() && longitude + radius >= it->second.getLongitude() ) 
+                {
+                    sensorsSpecifiques.push_back(it->second) ; 
+                }
+        }
+        if (sensorsSpecifiques.empty()) {
+        cout << "No sensors found within the radius" << endl;
+        return -1;  // Ou toute autre valeur indicative d'erreur
+        }   
     
-
-
-
-// float Model::airQualityGeo (float latitude , float logitude , float radius =0 , time_t start_date , time_t end_date) 
-    // {
-    //     Sensor sensorSpecifique ; 
+        vector<float> resultsO3 ; 
+        vector<float> resultsNO2 ;
+        vector<float> resultsSO2 ;
+        vector<float> resultsPM10 ;
         
+        for ( int i = 0 ; i!= sensorsSpecifiques.size() ; i++ )
+        {
+            vector<Measurement> mesuresO3 = this->getMeasurements( sensorsSpecifiques[i].getSensorId(), "O3");
+            vector<Measurement> mesuresSO2 = this->getMeasurements( sensorsSpecifiques[i].getSensorId(), "SO2");
+            vector<Measurement> mesuresNO2 = this->getMeasurements( sensorsSpecifiques[i].getSensorId(), "NO2");
+            vector<Measurement> mesuresPM10 = this->getMeasurements( sensorsSpecifiques[i].getSensorId(), "PM10");
+            for (const Measurement& m : mesuresO3) {
+                if (m.getTimestamp() <= end_date && m.getTimestamp() >= start_date) {
 
+                    resultsO3.push_back(m.getValue());
+                }
+            }
+            for (const Measurement& m : mesuresNO2) {
+                if (m.getTimestamp() <= end_date && m.getTimestamp() >= start_date) {
+                    resultsNO2.push_back(m.getValue());
+                }
+            }
+            for (const Measurement& m : mesuresSO2) {
+                if (m.getTimestamp() <= end_date && m.getTimestamp() >= start_date) {            
+                    resultsSO2.push_back(m.getValue());
+            }
+            }
+            for (const Measurement& m :mesuresPM10) {
+                if (m.getTimestamp() <= end_date && m.getTimestamp() >= start_date) {
+                    resultsPM10.push_back(m.getValue());
+                }
+            }
+        }
+         
+        float avgO3 ,avgNO2 , avgSO2 ,avgPM10 ;  
+        if (resultsO3.empty() ) {avgO3 = 0 ; } else  {avgO3 = util.getMax(resultsO3) ; } ; 
+        if (resultsNO2.empty() ) {avgNO2 = 0 ; } else  {avgNO2 = util.getMax(resultsNO2) ; } ; 
+        if (resultsSO2.empty() ) {avgSO2 = 0 ; } else  {avgSO2 = util.getMax(resultsSO2) ; } ; 
+        if (resultsPM10.empty() ) {avgPM10 = 0 ; } else  {avgPM10 = util.getMax(resultsPM10) ; } ; 
         
-    // }
+        return util.indiceATMO( avgO3 , avgNO2 , avgSO2 ,avgPM10  ) ; 
+    }
 
 

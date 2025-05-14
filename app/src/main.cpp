@@ -120,10 +120,10 @@ void afficherStats(const Stats& S) {
 }
 
 void mainTom(){
-    // string S = "2019-01-01 12:00:00";
-    // Date D = Date(S);
+    // string S1 = "2019-01-01 12:00:00";
+    // Date D = Date(S1);
     // string Sp = "2019-05-22 12:00:00";
-    // Date Dp = Date (S);
+    // Date Dp = Date (Sp);
     // bool test = (D == Dp);
     // cout<<test<<endl;
     // Model model;
@@ -139,12 +139,30 @@ void mainTom(){
     Date Dfin = Date("2019-04-24 12:00:00");
     Stats S = model.getData("Sensor0",Ddepar, Dfin, 1, -1, -1, -1);
 
-    afficherStats(S);
+   afficherStats(S);
+}
+
+void mainInes() 
+{
+    cout << "Création du model" << endl;
+    Model model;
+    Date date1 = Date("2019-01-01 12:00:00") ; 
+    Date date2 = Date("2019-04-24 12:00:00") ; 
+    cout << "Avant appel à airQualityGeo" << endl;
+    int atmo = model.airQualityGeo(
+        40, 5, 
+        date1 ,
+        date2 ,
+        5
+    );
+
+    cout << "ATMO-->" << atmo << endl;
 }
 
 
 int main()
 {
     mainTom();
+    mainInes() ; 
     return 0;
 }
