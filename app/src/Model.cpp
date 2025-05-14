@@ -250,7 +250,7 @@ bool Model::isSensorReliable(string sensorId)
     bool reliability = true;
     Sensor sensor_reference = getSensor(sensorId);
     float lat = sensor_reference.getLatitude();
-    float long = sensor_reference.getLongitude();
+    float lng = sensor_reference.getLongitude();
 
     // Valeur fixe pour l'écart-type maximum acceptable
     float max_std_deviation = 50.0;
@@ -275,7 +275,7 @@ bool Model::isSensorReliable(string sensorId)
         Sensor sensor_compare = getSensor(sensorId_compare);
         float lat_compare = sensor_compare.getLatitude();
         float long_compare = sensor_compare.getLongitude();
-        if (calculateDistance(lat, long, lat_compare, long_compare) <= 5)
+        if (calculateDistance(lat, lng, lat_compare, long_compare) <= 5)
         {
             valuesO3.push_back(m.getValue());
         }
@@ -286,7 +286,7 @@ bool Model::isSensorReliable(string sensorId)
         Sensor sensor_compare = getSensor(sensorId_compare);
         float lat_compare = sensor_compare.getLatitude();
         float long_compare = sensor_compare.getLongitude();
-        if (calculateDistance(lat, long, lat_compare, long_compare) <= 5)
+        if (calculateDistance(lat, lng, lat_compare, long_compare) <= 5)
         {
             valuesNO2.push_back(m.getValue());
         }
@@ -296,7 +296,7 @@ bool Model::isSensorReliable(string sensorId)
         Sensor sensor_compare = getSensor(sensorId_compare);
         float lat_compare = sensor_compare.getLatitude();
         float long_compare = sensor_compare.getLongitude();
-        if (calculateDistance(lat, long, lat_compare, long_compare) <= 5)
+        if (calculateDistance(lat, lng, lat_compare, long_compare) <= 5)
         {
             valuesSO2.push_back(m.getValue());
         }
@@ -306,7 +306,7 @@ bool Model::isSensorReliable(string sensorId)
         Sensor sensor_compare = getSensor(sensorId_compare);
         float lat_compare = sensor_compare.getLatitude();
         float long_compare = sensor_compare.getLongitude();
-        if (calculateDistance(lat, long, lat_compare, long_compare) <= 5)
+        if (calculateDistance(lat, lng, lat_compare, long_compare) <= 5)
         {
             valuesPM10.push_back(m.getValue());
         }
@@ -649,6 +649,88 @@ Stats Model::getData(string sensorId, Date startDate, Date EndDate, int Th03, in
 }
 
 
+// This method calculates a similarity score between two sensors based on their recent measurements.
+// It compares up to 100 recent values for each of four attributes: O3, NO2, SO2, and PM10,
+// and only considers values within the given date range.
+// The final score is normalized between 0 and 100 (the closer to 100, the more similar).
+double Model::calculateSimilarity(const Sensor& referenceSensor, const Sensor& compareSensor, const Date& startDate, const Date& endDate)
+{
+    double totalSimilarityScore = 0.0;
+    int count = 0;
+    const string attributes[] = {"O3", "NO2", "SO2", "PM10"};
+
+    for (const string& attribute : attributes)
+    {
+        vector<Measurement> referenceMeasurements = this->getMeasurements(referenceSensor.getSensorId(), attribute, 100);
+        vector<Measurement> compareMeasurements = this->getMeasurements(compareSensor.getSensorId(), attribute, 100);
+
+        if (referenceMeasurements.empty() || compareMeasurements.empty()) {
+            continue;
+        }
+
+        // Iterate until the end of one of the two vectors is reached
+        for (size_t i = 0; i < referenceMeasurements.size() && i < compareMeasurements.size(); ++i)
+        {
+            const Measurement& refMeasure = referenceMeasurements[i];
+            const Measurement& compareMeasure = compareMeasurements[i];
+
+            Date refDate(refMeasure.getTimestamp());
+            Date cmpDate(compareMeasure.getTimestamp());
+
+            if (refDate >= startDate && refDate <= endDate &&
+                cmpDate >= startDate && cmpDate <= endDate)
+            {
+                totalSimilarityScore += abs(refMeasure.getValue() - compareMeasure.getValue());
+                ++count;
+            }
+        }
+    }
+
+    if (count == 0) {
+        return 0.0;
+    }
+
+    totalSimilarityScore = totalSimilarityScore / count;
+
+    // Normalize between 0 and 100% (adding 1.0 to the denominator prevents division by 0)
+    return 100.0 / (1.0 + totalSimilarityScore);
+}
+
+
+// This method compares a given sensor to all other loaded sensors and computes a similarity score
+// based on recent measurements and a defined date range. It returns a sorted list of sensor IDs
+// with their similarity scores, showing only the top 5 most similar sensors.
+vector<pair<string, double>> Model::compareSensors(const string& referenceSensorID, const Date& startDate, const Date& endDate)
+{
+    vector<pair<string, double>> similarityScores; // A vector allows us to sort sensors by similarity score
+
+    Sensor referenceSensor = getSensor(referenceSensorID);
+    if (referenceSensor.getSensorId().empty()) {
+        cerr << "Reference sensor not found!" << endl;
+        return similarityScores;
+    }
+
+    for (const auto& [sensorID, sensor] : sensors)
+    {
+        if (sensorID == referenceSensorID) // Avoid comparing the sensor with itself
+            continue;
+
+        double score = calculateSimilarity(referenceSensor, sensor, startDate, endDate);
+        similarityScores.emplace_back(sensorID, score);
+    }
+
+    sort(similarityScores.begin(), similarityScores.end(),
+         [](const auto& a, const auto& b) {
+             return a.second > b.second;
+         });
+
+    // Keep only the top 5 elements, or fewer if there are less than 5
+    if (similarityScores.size() > 5) {
+        similarityScores.resize(5); // Resize the vector to keep only the top 5
+    }
+
+    return similarityScores;
+}
     
 
 

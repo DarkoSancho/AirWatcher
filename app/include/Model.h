@@ -49,11 +49,13 @@ public:
 
     vector<User> getAllUsers();
 
-
-
     //float airQualityGeo (float latitude , float longitude , float radius =0 , time_t start_date , time_t end_date) ;  
 
     Stats getData(string sensorId, Date startDate, Date EndDate, int Th03 = -1, int ThNO2 = -1, int ThSO2 = -1, int ThPM10 = -1);
+
+    std::vector<std::pair<std::string, double>> compareSensors(const std::string& referenceSensorID, const Date& startDate, const Date& endDate);
+
+    double calculateSimilarity(const Sensor& referenceSensor, const Sensor& compareSensor, const Date& startDate, const Date& endDate);
 
     //Retun statistiques: 
     //result.average[x]: Average concentration of x component
@@ -79,6 +81,11 @@ protected:
 
     bool loadUsersData(string pathUserCSV, string pathProviderCSV);
 
+    bool isSensorReliable(string sensorId);
+
+    float calculateDistance(float lat1, float lon1, float lat2, float lon2);
+
+    vector<Measurement> getAllMeasurementsForAttribute(string attribute);
 
 //----------------------------------------------------- Attributs protégés
 map<string,Sensor> sensors; 
