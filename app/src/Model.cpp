@@ -655,45 +655,54 @@ Stats Model::getData(string sensorId, Date startDate, Date EndDate, int Th03, in
 // The final score is normalized between 0 and 100 (the closer to 100, the more similar).
 double Model::calculateSimilarity(const Sensor& referenceSensor, const Sensor& compareSensor, const Date& startDate, const Date& endDate)
 {
-    double totalSimilarityScore = 0.0;
-    int count = 0;
     const string attributes[] = {"O3", "NO2", "SO2", "PM10"};
+    double totalDifference = 0.0;
+    int attributeCount = 0;
 
     for (const string& attribute : attributes)
     {
         vector<Measurement> referenceMeasurements = this->getMeasurements(referenceSensor.getSensorId(), attribute, 100);
         vector<Measurement> compareMeasurements = this->getMeasurements(compareSensor.getSensorId(), attribute, 100);
+        double refSum = 0.0, cmpSum = 0.0;
+        int refCount = 0, cmpCount = 0;
 
         if (referenceMeasurements.empty() || compareMeasurements.empty()) {
             continue;
         }
 
-        // Iterate until the end of one of the two vectors is reached
-        for (size_t i = 0; i < referenceMeasurements.size() && i < compareMeasurements.size(); ++i)
-        {
-            const Measurement& refMeasure = referenceMeasurements[i];
-            const Measurement& compareMeasure = compareMeasurements[i];
-
-            Date refDate(refMeasure.getTimestamp());
-            Date cmpDate(compareMeasure.getTimestamp());
-
-            if (refDate >= startDate && refDate <= endDate &&
-                cmpDate >= startDate && cmpDate <= endDate)
-            {
-                totalSimilarityScore += abs(refMeasure.getValue() - compareMeasure.getValue());
-                ++count;
+        for (const auto& m : referenceMeasurements) {
+            Date d(m.getTimestamp());
+            if (d >= startDate && d <= endDate) {
+                refSum += m.getValue();
+                refCount++;
             }
+        }
+
+        for (const auto& m : compareMeasurements) {
+            Date d(m.getTimestamp());
+            if (d >= startDate && d <= endDate) {
+                cmpSum += m.getValue();
+                cmpCount++;
+            }
+        }
+
+        // si au moins une mesure valide pour chaque capteur
+        if (refCount > 0 && cmpCount > 0) {
+            double refAvg = refSum / refCount;
+            double cmpAvg = cmpSum / cmpCount;
+            double diff = abs(refAvg - cmpAvg);
+            totalDifference += diff;
+            attributeCount++;
         }
     }
 
-    if (count == 0) {
-        return 0.0;
+    // si pas de données exploitables
+    if (attributeCount == 0) {
+        return 0.0;  
     }
 
-    totalSimilarityScore = totalSimilarityScore / count;
-
-    // Normalize between 0 and 100% (adding 1.0 to the denominator prevents division by 0)
-    return 100.0 / (1.0 + totalSimilarityScore);
+    double averageDifference = totalDifference / attributeCount; // attributCount vaut toujours 4
+    return 100.0 / (1.0 + averageDifference);  
 }
 
 
