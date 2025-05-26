@@ -427,9 +427,14 @@ string Controller :: loadMenu() {
 
 
 
-// performances
+// Evaluation des performances
 
-
+//Teste la performance de la méthode de calcul de la qualité moyenne de l'air dans une zone géographique.
+// Utilise plusieurs capteurs autour d'une position fixe avec un rayon donné, et mesure le temps d'exécution
+// pour le calcul de la qualité de l'air sur une période définie.
+ 
+// Paramètres : aucun (les capteurs, rayon et dates sont définis en dur)
+// Retour : aucun (affiche les résultats via la vue)
 void Controller::runTest_AverageCalculation() {
     vector<string> sensors = {"Sensor1", "Sensor8", "Sensor14"};
     Date start("2019-01-01");
