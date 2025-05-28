@@ -510,12 +510,16 @@ vector<Measurement> Model::getMeasurements(string sensorId, string attribute) {
 
 
 
-
-
 // This method calculates a similarity score between two sensors based on their recent measurements.
 // It compares up to 100 recent values for each of four attributes: O3, NO2, SO2, and PM10,
 // and only considers values within the given date range.
 // The final score is normalized between 0 and 100 (the closer to 100, the more similar).
+// Parameters:
+//   referenceSensor  The reference sensor to compare against.
+//   compareSensor    The sensor being compared to the reference sensor.
+//   startDate        The start date of the time interval for measurements to consider.
+//   endDate          The end date of the time interval for measurements to consider.
+// return : A similarity score (double) between 0.0 and 100.0. A value close to 100 indicates high similarity.
 double Model::calculateSimilarity(const Sensor& referenceSensor, const Sensor& compareSensor, const Date& startDate, const Date& endDate)
 {
     const string attributes[] = {"O3", "NO2", "SO2", "PM10"};
@@ -574,6 +578,12 @@ double Model::calculateSimilarity(const Sensor& referenceSensor, const Sensor& c
 // This method compares a given sensor to all other loaded sensors and computes a similarity score
 // based on recent measurements and a defined date range. It returns a sorted list of sensor IDs
 // with their similarity scores, showing only the top 5 most similar sensors.
+// Parameters:
+//   referenceSensorID  The ID of the reference sensor.
+//   startDate          The start date of the time interval for measurements to consider.
+//   endDate            The end date of the time interval for measurements to consider.
+// return : A vector of pairs (sensor ID, similarity score), sorted by similarity (highest first).
+//          Contains up to 5 sensors most similar to the reference.
 vector<pair<string, double>> Model :: compareSensors( const string& referenceSensorID, const Date& startDate,  const Date& endDate)
 {
     vector<pair<string, double>> similarityScores; // A vector allows us to sort sensors by similarity score
