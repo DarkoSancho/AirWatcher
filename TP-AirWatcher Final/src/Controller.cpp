@@ -144,9 +144,6 @@ bool Controller :: selectFunctionality (int functionality) {
 
                     // saisi des seuils définis par l'utilisateur 
 
-                    //vector<Measurement> measurements = model.getMeasurements(sensorId, 10, attribute);
-                    //view.displayMeasurements(measurements);
-
                     Stats s = model.getData(sensorId, startDate, endDate) ; 
                     view.afficherStats(s) ; 
                     break; 
@@ -192,8 +189,6 @@ bool Controller :: selectFunctionality (int functionality) {
 
                     // saisi des seuils définis par l'utilisateur 
 
-                    //vector<Measurement> measurements = model.getMeasurements(sensorId, 10, attribute);
-                    //view.displayMeasurements(measurements);
 
                     Stats s = model.getData(sensorId, startDate, endDate) ; 
                     view.afficherStats(s) ; 
@@ -288,9 +283,6 @@ bool Controller :: selectFunctionality (int functionality) {
 
 
                     // saisi des seuils définis par l'utilisateur 
-
-                    //vector<Measurement> measurements = model.getMeasurements(sensorId, 10, attribute);
-                    //view.displayMeasurements(measurements);
                     
                     time_point<high_resolution_clock> start = high_resolution_clock::now();
                     Stats s = model.getData(sensorId, startDate, endDate) ;  
@@ -324,7 +316,6 @@ bool Controller :: selectFunctionality (int functionality) {
                     Date endDate =  Date(endInput) ; 
 
                     
-                    //vector<pair<string, double>> results = model.compareSensors(sensorId,10, "O3") ; 
                     time_point<high_resolution_clock> start = high_resolution_clock::now();
                     vector<pair<string, double>> results = model.compareSensors(sensorId , startDate,  endDate) ; 
                     time_point<high_resolution_clock> end = high_resolution_clock::now();
@@ -333,17 +324,12 @@ bool Controller :: selectFunctionality (int functionality) {
                     map<string, Sensor> allSensors = model.getAllSensors();
                     int numberOfSensorsCompared = allSensors.size()-1;
 
-
-                    
-                    //view.displayScoreAndRank(results);
-
-                    // version de Yassine : 
                     view.displaySensorSimilarityResults(results) ; 
                     view.printMessage("Execution Time : " + to_string(time) + " ms - Compared with: " + to_string(numberOfSensorsCompared) + " sensors.");
 
                     break;
                 }
-                case 4 : {
+                case 4 : {  // Evaluation des performances
                       int choice = view.displayPerformanceTestMenu();
 
                         switch (choice) {
@@ -455,6 +441,12 @@ void Controller::runTest_AverageCalculation() {
     view.printMessage(">>> FIN DU TEST 1 <<<\n\n");
 }
 
+// Teste la performance de l’algorithme de comparaison entre capteurs.
+// Pour une liste de capteurs de référence, on compare chaque capteur à tous les autres
+// dans une période donnée et on mesure le temps d'exécution.
+
+// Paramètres : aucun (capteurs et dates codés en dur)
+// Retour : aucun (affiche les résultats via la vue)
 void Controller::runTest_SensorComparison() {
     vector<string> sensors = {"Sensor3", "Sensor17", "Sensor22"};
     Date start("2019-01-01");
@@ -478,6 +470,13 @@ void Controller::runTest_SensorComparison() {
     view.printMessage(">>> FIN DU TEST 2 <<<\n\n");
 }
 
+
+// Teste la performance de la récupération des mesures d’un capteur pour un attribut donné.
+// Pour chaque capteur de la liste, on récupère toutes les mesures de l'attribut spécifié (par exemple "O3")
+// et on mesure le temps nécessaire.
+
+// Paramètres : aucun (capteurs et attribut définis en dur)
+// Retour : aucun (affiche les résultats via la vue)
 void Controller::runTestSensorReadings() {
     vector<string> sensors = {"Sensor1", "Sensor8", "Sensor14"};
     string attribute = "O3";
