@@ -1,18 +1,74 @@
-==== RESULTS ====
+Welcome to AirWatcher App!
 
-Change in air quality in the area:  
-Sensors used: 5 sensors detected within the radius
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Enter user login: 
+AirWatcher App -  Welcome to AirWatcher ! Let's get started.
 
-|Pollutant|Average BEFORE (µg/m³)|Average AFTER (µg/m³)| Improvement (%) 
-|----------|---------------------|---------------------|------------------|
-| O3       | 52.6                | 45.1                | -14.3 %          |
-| NO2      | 34.2                | 28.7                | -16.1 %          |
-| SO2      | 6.8                 | 5.0                 | -26.5 %          |
-| PM10     | 24.5                | 20.3                | -17.1 %          |
+AirWatcher App - Air Cleaner Provider Menu 
 
-Conclusion:
+1) - Show statistics for a specific sensor. 
+2) - Sign Out.
 
-ATMO Index BEFORE treatment: 4 (Moderate air quality)  
-ATMO Index AFTER treatment : 3 (Fair air quality)
+Select a functionality by choosing the corresponding number:
 
-The air quality in the area has improved after the installation of the purifier.
+AirWatcher App - Showing all the readings of a Sensor
+Enter Sensor ID (in the format SensorXX): 
+Do you want to set a threshold for the attribute O3 ? (yes/no) : 
+Enter thresold value O3 : 
+Do you want to set a threshold for the attribute NO2 ? (yes/no) : 
+Do you want to set a threshold for the attribute SO2 ? (yes/no) : 
+Do you want to set a threshold for the attribute PM10 ? (yes/no) : 
+Enter Start Date in format YYYY-MM-DD : 
+Enter End Date in format YYYY-MM-DD : 
+---- Averages ----
+NO2 : 74
+O3 : 47
+PM10 : 46
+SO2 : 40
+---- Minimum ----
+NO2 : 70.25
+O3 : 43.75
+PM10 : 42.5
+SO2 : 36.5
+---- Maximum ----
+NO2 : 78.75
+O3 : 52.5
+PM10 : 50.5
+SO2 : 45
+---- Standard deviation ----
+NO2 : 1.67772
+O3 : 2.0012
+PM10 : 1.73482
+SO2 : 1.61371
+---- Exceedances ----
+NO2 : no data / No threshold provided
+O3 : 267
+PM10 : no data / No threshold provided
+SO2 : no data / No threshold provided
+---- Date and value ATMO min ----
+01/01/2019 12:00:00 : 7
+---- Date and value ATMO max ----
+02/01/2019 12:00:00 : 8
+NO2 : 74
+O3 : 47
+PM10 : 46
+SO2 : 40
+
+AirWatcher App - Air Cleaner Provider Menu 
+
+1) - Show statistics for a specific sensor. 
+2) - Sign Out.
+
+Select a functionality by choosing the corresponding number:
+
+
+AirWatcher App- You signed out successfully !
+
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Exiting...

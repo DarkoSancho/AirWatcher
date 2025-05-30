@@ -1,7 +1,34 @@
-==== RESULTS ====
+Welcome to AirWatcher App!
 
-Average air quality in the zone  
-Center: 44.0, 0.0 -- Radius: 5 km  
-Period: 01/01/2019 00:00 → 01/01/2019 23:59
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Enter user login: 
+AirWatcher App -  Welcome to AirWatcher ! Let's get started.
 
-→ ATMO Index = 3 (Moderate air quality)
+AirWatcher App - Air Cleaner Provider Menu 
+
+1) - Show statistics for a specific sensor. 
+2) - Sign Out.
+
+Select a functionality by choosing the corresponding number:
+
+AirWatcher App - Showing all the readings of a Sensor
+Enter Sensor ID (in the format SensorXX): 
+
+AirWatcher App - Air Cleaner Provider Menu 
+
+1) - Show statistics for a specific sensor. 
+2) - Sign Out.
+
+Select a functionality by choosing the corresponding number:
+
+
+AirWatcher App- You signed out successfully !
+
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Exiting...

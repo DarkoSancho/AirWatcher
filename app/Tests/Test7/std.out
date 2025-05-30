@@ -1,36 +1,75 @@
-==== RESULTS ====
+Welcome to AirWatcher App!
 
-Sensor: Sensor50  
-Location: Latitude 46.0, Longitude -1.0  
-Period: from 2019-01-01 00:00:00 to 2019-01-03 23:59:59
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Enter user login: 
+AirWatcher App -  Welcome to AirWatcher ! Let's get started.
 
-Total number of measurements: 12
+AirWatcher App - Air Cleaner Provider Menu 
 
-Average [O3]   = 63.0 µg/m³  
-Min [O3]       = 62.2 µg/m³  → 03/01/2019 12:00:00  
-Max [O3]       = 63.7 µg/m³  → 02/01/2019 12:00:00  
-Standard deviation [O3] = 0.8 µg/m³  
+1) - Show statistics for a specific sensor. 
+2) - Sign Out.
 
-Average [NO2]   = 53.7 µg/m³  
-Min [NO2]       = 52.4 µg/m³  → 03/01/2019 12:00:00  
-Max [NO2]       = 55.0 µg/m³  → 02/01/2019 12:00:00  
-Standard deviation [NO2] = 1.3 µg/m³  
+Select a functionality by choosing the corresponding number:
 
-Average [SO2]   = 49.0 µg/m³  
-Min [SO2]       = 48.3 µg/m³  → 01/01/2019 12:00:00  
-Max [SO2]       = 50.0 µg/m³  → 02/01/2019 12:00:00  
-Standard deviation [SO2] = 0.9 µg/m³  
+AirWatcher App - Showing all the readings of a Sensor
+Enter Sensor ID (in the format SensorXX): 
+Do you want to set a threshold for the attribute O3 ? (yes/no) : 
+Enter thresold value O3 : 
+Do you want to set a threshold for the attribute NO2 ? (yes/no) : 
+Enter thresold value NO2 : 
+Do you want to set a threshold for the attribute SO2 ? (yes/no) : 
+Do you want to set a threshold for the attribute PM10 ? (yes/no) : 
+Enter Start Date in format YYYY-MM-DD : 
+Enter End Date in format YYYY-MM-DD : 
+---- Averages ----
+NO2 : 74
+O3 : 47
+PM10 : 46
+SO2 : 40
+---- Minimum ----
+NO2 : 70.25
+O3 : 43.75
+PM10 : 42.5
+SO2 : 36.5
+---- Maximum ----
+NO2 : 78.75
+O3 : 52.5
+PM10 : 50.5
+SO2 : 45
+---- Standard deviation ----
+NO2 : 1.67772
+O3 : 2.0012
+PM10 : 1.73482
+SO2 : 1.61371
+---- Exceedances ----
+NO2 : 223
+O3 : 267
+PM10 : no data / No threshold provided
+SO2 : no data / No threshold provided
+---- Date and value ATMO min ----
+01/01/2019 12:00:00 : 7
+---- Date and value ATMO max ----
+02/01/2019 12:00:00 : 8
+NO2 : 74
+O3 : 47
+PM10 : 46
+SO2 : 40
 
-Average [PM10]   = 45.2 µg/m³  
-Min [PM10]       = 44.6 µg/m³  → 01/01/2019 12:00:00  
-Max [PM10]       = 45.6 µg/m³  → 03/01/2019 12:00:00  
-Standard deviation [PM10] = 0.6 µg/m³  
+AirWatcher App - Air Cleaner Provider Menu 
 
-Exceedances [PM10 > 40 µg/m³] : 3 times  
-Exceedances [NO2 > 40 µg/m³]  : 3 times
+1) - Show statistics for a specific sensor. 
+2) - Sign Out.
 
-ATMO Sub-indices based on average values:
-- O3 = 63.0 µg/m³   → ATMO index: 4  
-- NO2 = 53.7 µg/m³   → ATMO index: 3  
-- SO2 = 49.0 µg/m³   → ATMO index: 3  
-- PM10 = 45.2 µg/m³   → ATMO index: 3
+Select a functionality by choosing the corresponding number:
+
+
+AirWatcher App- You signed out successfully !
+
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Exiting...

@@ -1,12 +1,12 @@
-//---------- Interface de la classe <Controller> (fichier View.h) ----------------
+//---------- Interface de la classe <View> (fichier View.h) ----------------
 
 #if ! defined ( VIEW_H )
 #define VIEW_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include <iostream>
 #include <string>
-#include <list>
-#include <ctime>
+#include <stdlib.h> 
 #include <map>
 #include <vector> 
 using namespace std;
@@ -15,41 +15,38 @@ using namespace std;
 #include "Sensor.h"
 #include "Attribute.h"
 #include "Measurement.h"
-#include "Provider.h"
-#include "Cleaner.h"
-#include "User.h"
-#include "View.h"
-#include <ctime>
-//------------------------------------------------------------------------
 
-class View
-{
-//----------------------------------------------------------------- PUBLIC
+class View {
+    //----------------------------------------------------------------- PUBLIC
 
-public:
-//----------------------------------------------------- Méthodes publiques
-   bool selectFunctionality (int option) ; 
-   void mainLoop () ; 
+    public:
+    //----------------------------------------------------- Méthodes publiques
+
+    // affichage messages console
+    void printMessage(string message) ; 
+    void printMessageErreur (string message) ;
+    void printSignInConfirmation (bool SignedIn) ; 
+    void printSignOutConfirmation () ; 
+
+
+    // affichage résultat des fonctionnalités de la classe Model
+    void displayMeanAirQuality(vector<float> meanAirQuality) ; 
+    void displayMeasurements(vector <Measurement> measurements) ; 
+    //void displayScoreAndRank(map<float, Sensor> ranking) ; 
+    void displaySensorSimilarityResults(const vector<pair<string, double>>& results) ;
     
-
-//-------------------------------------------- Constructeurs - destructeur
-    View ( );
-
-    virtual ~View ( );
-
-//------------------------------------------------------------------ PRIVE
-
-protected:
-//----------------------------------------------------- Méthodes protégées
-    Model model ; 
-     
+    // méthode de Tom : 
+    void afficherStats(const Stats& S) ; 
 
 
-//----------------------------------------------------- Attributs protégés
+    void displayScoreAndRank(const vector<pair<string, double>>& rankingVector); 
+    int displayPerformanceTestMenu() ; 
 
+    int getIntInput(string userInput) ; 
+    float getFloatInput(string userInput) ; 
+    string getStringInput(string userInput) ; 
 
-};
+} ; 
 
-//-------------------------------- Autres définitions dépendantes de <View>
 
 #endif // VIEW_H;

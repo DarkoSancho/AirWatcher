@@ -16,7 +16,7 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "Cleaner.h"
-#include "Date.h"
+
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
@@ -38,12 +38,12 @@ float Cleaner::getLongitude() const
     return longitude;
 }
 
-Date Cleaner::getStartTime() const
+string Cleaner::getStartTime() const
 {
     return startTime;
 }
 
-Date Cleaner::getEndTime() const
+string Cleaner::getEndTime() const
 {
     return endTime;
 }
@@ -64,18 +64,18 @@ void Cleaner::setLongitude(const float longitude)
     this->longitude = longitude;
 }
 
-void Cleaner::setStartTime(const Date startTime)
+void Cleaner::setStartTime(const string startTime)
 {
     this->startTime = startTime;
 }
 
-void Cleaner::setEndTime(const Date endTime)
+void Cleaner::setEndTime(const string endTime)
 {
     this->endTime = endTime;
 }
 
-bool isActiveAt(Date time) {
-    // Note to myself : VOIR COMMENT FAIRE CA avec en manipulant des string (normalement une simple comparaison fonctionne)
+bool isActiveAt(string time) {
+    return true;
 }
 
 //-------------------------------------------- Constructeurs - destructeur
@@ -85,7 +85,7 @@ Cleaner::Cleaner()
     // Constructeur par défaut
 }
 
-Cleaner::Cleaner(string cleanerId, float latitude, float longitude, Date startTime, Date endTime)
+Cleaner::Cleaner(string cleanerId, float latitude, float longitude, string startTime, string endTime)
     : cleanerId(cleanerId), latitude(latitude), longitude(longitude), startTime(startTime), endTime(endTime)
 {
     // Constructeur avec paramètres

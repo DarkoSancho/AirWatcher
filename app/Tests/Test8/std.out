@@ -1,0 +1,75 @@
+Welcome to AirWatcher App!
+
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Enter user login: 
+AirWatcher App -  Welcome to AirWatcher ! Let's get started.
+
+AirWatcher App - Air Cleaner Provider Menu 
+
+1) - Show statistics for a specific sensor. 
+2) - Sign Out.
+
+Select a functionality by choosing the corresponding number:
+
+AirWatcher App - Showing all the readings of a Sensor
+Enter Sensor ID (in the format SensorXX): 
+Do you want to set a threshold for the attribute O3 ? (yes/no) : 
+Enter thresold value O3 : 
+Do you want to set a threshold for the attribute NO2 ? (yes/no) : 
+Enter thresold value NO2 : 
+Do you want to set a threshold for the attribute SO2 ? (yes/no) : 
+Do you want to set a threshold for the attribute PM10 ? (yes/no) : 
+Enter Start Date in format YYYY-MM-DD : 
+Enter End Date in format YYYY-MM-DD : 
+---- Averages ----
+NO2 : 55
+O3 : 45
+PM10 : 71
+SO2 : 52
+---- Minimum ----
+NO2 : 53.58
+O3 : 43.04
+PM10 : 69.24
+SO2 : 50.76
+---- Maximum ----
+NO2 : 58.9
+O3 : 48.27
+PM10 : 74.7
+SO2 : 55.91
+---- Standard deviation ----
+NO2 : 1.70875
+O3 : 1.31887
+PM10 : 1.44431
+SO2 : 1.77283
+---- Exceedances ----
+NO2 : 0
+O3 : 52
+PM10 : no data / No threshold provided
+SO2 : no data / No threshold provided
+---- Date and value ATMO min ----
+01/01/2019 12:00:00 : 9
+---- Date and value ATMO max ----
+01/01/2019 12:00:00 : 9
+NO2 : 55
+O3 : 45
+PM10 : 71
+SO2 : 52
+
+AirWatcher App - Air Cleaner Provider Menu 
+
+1) - Show statistics for a specific sensor. 
+2) - Sign Out.
+
+Select a functionality by choosing the corresponding number:
+
+
+AirWatcher App- You signed out successfully !
+
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Exiting...

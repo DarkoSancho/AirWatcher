@@ -1,3 +1,6 @@
+
+
+
 /*************************************************************************
                            Model  -  description
                              -------------------
@@ -28,6 +31,8 @@
 #include "PrivateIndividual.h"
 #include "Date.h"
 #include "util.h"
+#include <set>
+
 
 
 // Fonctions utilitaires
@@ -386,12 +391,18 @@ float Model::calculateDistance(float lat1, float lon1, float lat2, float lon2) {
     return distance;
 }
 
+
 vector<Measurement> Model::getAllMeasurementsForAttribute(string attribute)
 {
     vector<Measurement> result;
+
+
+    Date startDate = Date ( 1, 1, 2019, 12, 0, 0 );
+    Date endDate =  Date ( 31, 12, 2019, 12, 0, 0 );
+
     for (const auto& pair : sensors) {
         const string& sensorId = pair.first;
-        vector<Measurement> partial = getMeasurements(sensorId, attribute);
+        vector<Measurement> partial = getMeasurements(sensorId,100, attribute);
         result.insert(result.end(), partial.begin(), partial.end());
     }
     return result;
@@ -441,9 +452,10 @@ map<string, Sensor> Model::getAllSensors()
 }
 
 
+//------- ***** ça commence ici Yassine pour te repérer *****----------------
 
 // Méthode qui renvoie les measurements associées à un capteur donné, pour un attribut donné (O2,NO2,SO2,PM10), si on ne veut pas de count pardéfault cela vaut -1
-vector<Measurement> Model::getMeasurements(string sensorId , string attribute, int count)
+vector<Measurement> Model::getMeasurements(string sensorId, int count, string attribute)
 {
     vector<Measurement> measurements;
 
@@ -475,15 +487,247 @@ vector<Measurement> Model::getMeasurements(string sensorId , string attribute, i
 }
 
 
-Stats Model::getData(string sensorId, Date startDate, Date EndDate, int Th03, int ThNO2, int ThSO2, int ThPM10 ){
+//surcharge 
+vector<Measurement> Model::getMeasurements(string sensorId, string attribute) {
+    vector<Measurement> measurements;
+
+    // Vérifie si le capteur existe dans la map
+    if (this->measurements.find(sensorId) == this->measurements.end()) {
+        return measurements; // Capteur non trouvé → retourne vecteur vide
+    }
+
+    vector<Measurement>& sensorMeasurements = this->measurements[sensorId];
+
+    // Parcours normal (ordre chronologique) — car pas besoin ici des N dernières mesures
+    for (const Measurement& measurement : sensorMeasurements) {
+        if (measurement.getAttributeId() == attribute) {
+            measurements.push_back(measurement);
+        }
+    }
+
+    return measurements;
+}
+
+
+
+// This method calculates a similarity score between two sensors based on their recent measurements.
+// It compares up to 100 recent values for each of four attributes: O3, NO2, SO2, and PM10,
+// and only considers values within the given date range.
+// The final score is normalized between 0 and 100 (the closer to 100, the more similar).
+// Parameters:
+//   referenceSensor  The reference sensor to compare against.
+//   compareSensor    The sensor being compared to the reference sensor.
+//   startDate        The start date of the time interval for measurements to consider.
+//   endDate          The end date of the time interval for measurements to consider.
+// return : A similarity score (double) between 0.0 and 100.0. A value close to 100 indicates high similarity.
+double Model::calculateSimilarity(const Sensor& referenceSensor, const Sensor& compareSensor, const Date& startDate, const Date& endDate)
+{
+    const string attributes[] = {"O3", "NO2", "SO2", "PM10"};
+    double totalDifference = 0.0;
+    int attributeCount = 0;
+
+    for (const string& attribute : attributes)
+    {
+        vector<Measurement> referenceMeasurements = this->getMeasurements(referenceSensor.getSensorId(), -1, attribute);
+        vector<Measurement> compareMeasurements = this->getMeasurements(compareSensor.getSensorId(), -1, attribute);
+        double refSum = 0.0, cmpSum = 0.0;
+        int refCount = 0, cmpCount = 0;
+
+        if (referenceMeasurements.empty() || compareMeasurements.empty()) {
+            continue;
+        }
+
+        for (const auto& m : referenceMeasurements) {
+            Date d(m.getTimestamp());
+            if (d >= startDate && d <= endDate) {
+                refSum += m.getValue();
+                refCount++;
+            }
+        }
+
+        for (const auto& m : compareMeasurements) {
+            Date d(m.getTimestamp());
+            if (d >= startDate && d <= endDate) {
+                cmpSum += m.getValue();
+                cmpCount++;
+            }
+        }
+
+        // si au moins une mesure valide pour chaque capteur
+        if (refCount > 0 && cmpCount > 0) {
+            double refAvg = refSum / refCount;
+            double cmpAvg = cmpSum / cmpCount;
+            double diff = abs(refAvg - cmpAvg);
+            totalDifference += diff;
+            attributeCount++;
+        }
+    }
+
+    // si pas de donnÃ©es exploitables
+    if (attributeCount == 0) {
+        return 0.0;  
+    }
+
+    double averageDifference = totalDifference / attributeCount; // attributCount vaut toujours 4
+
+    return 100.0 / (1.0 + averageDifference);  
+}
+
+
+
+// This method compares a given sensor to all other loaded sensors and computes a similarity score
+// based on recent measurements and a defined date range. It returns a sorted list of sensor IDs
+// with their similarity scores, showing only the top 5 most similar sensors.
+// Parameters:
+//   referenceSensorID  The ID of the reference sensor.
+//   startDate          The start date of the time interval for measurements to consider.
+//   endDate            The end date of the time interval for measurements to consider.
+// return : A vector of pairs (sensor ID, similarity score), sorted by similarity (highest first).
+//          Contains up to 5 sensors most similar to the reference.
+vector<pair<string, double>> Model :: compareSensors( const string& referenceSensorID, const Date& startDate,  const Date& endDate)
+{
+    vector<pair<string, double>> similarityScores; // A vector allows us to sort sensors by similarity score
+
+    Sensor referenceSensor = getSensor(referenceSensorID);
+    if (referenceSensor.getSensorId().empty()) {
+        cerr << "Reference sensor not found!" << endl;
+        return similarityScores;
+    }
+
+    for (map<string, Sensor>::const_iterator it = sensors.begin(); it != sensors.end(); ++it)
+    {
+        const string& sensorID = it->first;
+        const Sensor& sensor = it->second;
+
+        if (sensorID == referenceSensorID) // Avoid comparing the sensor with itself
+            continue;
+
+        double score = calculateSimilarity(referenceSensor, sensor, startDate, endDate);
+        similarityScores.push_back(pair<string, double>(sensorID, score));
+    }
+
+    sort(similarityScores.begin(), similarityScores.end(),
+         [](const pair<string, double>& a, const pair<string, double>& b) {
+             return a.second > b.second;
+         });
+
+    // Keep only the top 5 elements, or fewer if there are less than 5
+    if (similarityScores.size() > 5) {
+        similarityScores.resize(5); // Resize the vector to keep only the top 5
+    }
+
+    return similarityScores;
+}
+
+
+
+
+
+
+vector<float> Model::airQualityGeo(float latitude, float longitude, Date start, Date end,  float radius){
+    float meanNO2 = 0.0;
+    float meanO3 = 0.0;
+    float meanPM10 = 0.0;
+    float meanSO2 = 0.0;
+    int no2Count = 0;
+    int o3Count = 0;
+    int pm10Count = 0;
+    int so2Count = 0;
+    int sensorCount=0;
+
+    for (auto &sensor : this->sensors)
+    {
+        if (isWithinRadius(sensor.second.getLatitude(), sensor.second.getLongitude(), latitude, longitude, radius))
+        cout << "Sensor " << sensor.first << " is within radius." << endl;
+        {
+            sensorCount++;
+            for (auto &measurement : this->measurements[sensor.first])
+            {
+                if (measurement.getTimestamp() >= start && measurement.getTimestamp() <= end)
+                {
+                    if (measurement.getAttributeId() == "NO2")
+                    {
+                        meanNO2 += measurement.getValue();
+                        no2Count++;
+                    }
+                    else if (measurement.getAttributeId() == "O3")
+                    {
+                        meanO3 += measurement.getValue();
+                        o3Count++;
+                    }
+                    else if (measurement.getAttributeId() == "PM10")
+                    {
+                        meanPM10 += measurement.getValue();
+                        pm10Count++;
+                    }
+                    else if (measurement.getAttributeId() == "SO2")
+                    {
+                        meanSO2 += measurement.getValue();
+                        so2Count++;
+                    } else {
+                        cerr << "Error: unknown attribute " << measurement.getAttributeId() << endl;
+                    
+                    }
+                }
+            }
+        }
+    }
+
+    if (no2Count > 0)
+    {
+        meanNO2 /= no2Count;
+    }
+    if (o3Count > 0)
+    {
+        meanO3 /= o3Count;
+    }
+    if (pm10Count > 0)
+    {
+        meanPM10 /= pm10Count;
+    }
+    if (so2Count > 0)
+    {
+        meanSO2 /= so2Count;
+    }
+
+    if (sensorCount == 0)
+    {
+        cerr << "No sensor found in radius " << radius << " at (" << latitude << ", " << longitude << ")" << endl;
+        return {};
+    }
+
+    return {meanNO2, meanO3, meanPM10, meanSO2};
+}
+
+bool Model :: isWithinRadius(float lat1, float lon1, float lat2, float lon2, float radiusKm) {
+    const float earthRadiusKm = 6371.0;
+
+    float dLat = (lat2 - lat1) * M_PI / 180.0;
+    float dLon = (lon2 - lon1) * M_PI / 180.0;
+
+    float a = sin(dLat / 2) * sin(dLat / 2) +
+              cos(lat1 * M_PI / 180.0) * cos(lat2 * M_PI / 180.0) *
+              sin(dLon / 2) * sin(dLon / 2);
+
+    float c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    float distance = earthRadiusKm * c;
+
+    return distance <= radiusKm;
+}
+
+
+
+
+Stats Model::getData(string sensorId, Date startDate, Date EndDate, int Th03 , int ThNO2 , int ThSO2, int ThPM10 ){
  
     Stats Stat;
     Util util;
-    vector<Measurement> resultsO3 = getMeasurements( sensorId, "03");
+    vector<Measurement> resultsO3 = getMeasurements( sensorId, "O3");
     vector<Measurement> resultsNO2 = getMeasurements( sensorId, "NO2");
     vector<Measurement> resultsSO2 = getMeasurements( sensorId, "SO2");    
     vector<Measurement> resultsPM10 = getMeasurements( sensorId, "PM10");
 
+    // We store in valuesXX the valid values of component XX (dates between startDate and EndDate)
     vector<float> values03, valuesNO2, valuesSO2, valuesPM10;
     for (const Measurement& m : resultsO3) {
         if (m.getTimestamp() <= EndDate && m.getTimestamp() >= startDate) {
@@ -506,7 +750,7 @@ Stats Model::getData(string sensorId, Date startDate, Date EndDate, int Th03, in
         valuesPM10.push_back(m.getValue());
         }
     }
-
+    // If there are not valid value: default value is -1.
     Stat.average = {
         { "O3",   values03.empty()   ? -1 : util.getAverage(values03) },
         { "NO2",  valuesNO2.empty()  ? -1 : util.getAverage(valuesNO2) },
@@ -544,6 +788,7 @@ Stats Model::getData(string sensorId, Date startDate, Date EndDate, int Th03, in
     // Work on amtmo map:
     map<Date, float> atmo;
 
+   // To compute the daily mean, max, and min ATMO values, we calculate ATMO for each day with available data. These daily values are stored in valueDayXX maps, where the keys are Dates.
     map<Date, list<int>> valueDayO3;
     map<Date, list<int>> valueDayNO2;
     map<Date, list<int>> valueDaySO2;
@@ -634,6 +879,8 @@ Stats Model::getData(string sensorId, Date startDate, Date EndDate, int Th03, in
         }
         atmo[date] = util.getMax(value);
     }
+
+    // As AMTO is an integer we round it with the std methode round.
     map<Date, int> atmoRound;
     for (const auto& pair : atmo) {
         atmoRound[pair.first] = static_cast<int>(std::round(pair.second));
@@ -647,109 +894,4 @@ Stats Model::getData(string sensorId, Date startDate, Date EndDate, int Th03, in
     return Stat;
   
 }
-
-
-// This method calculates a similarity score between two sensors based on their recent measurements.
-// It compares up to 100 recent values for each of four attributes: O3, NO2, SO2, and PM10,
-// and only considers values within the given date range.
-// The final score is normalized between 0 and 100 (the closer to 100, the more similar).
-double Model::calculateSimilarity(const Sensor& referenceSensor, const Sensor& compareSensor, const Date& startDate, const Date& endDate)
-{
-    const string attributes[] = {"O3", "NO2", "SO2", "PM10"};
-    double totalDifference = 0.0;
-    int attributeCount = 0;
-
-    for (const string& attribute : attributes)
-    {
-        vector<Measurement> referenceMeasurements = this->getMeasurements(referenceSensor.getSensorId(), attribute, 100);
-        vector<Measurement> compareMeasurements = this->getMeasurements(compareSensor.getSensorId(), attribute, 100);
-        double refSum = 0.0, cmpSum = 0.0;
-        int refCount = 0, cmpCount = 0;
-
-        if (referenceMeasurements.empty() || compareMeasurements.empty()) {
-            continue;
-        }
-
-        for (const auto& m : referenceMeasurements) {
-            Date d(m.getTimestamp());
-            if (d >= startDate && d <= endDate) {
-                refSum += m.getValue();
-                refCount++;
-            }
-        }
-
-        for (const auto& m : compareMeasurements) {
-            Date d(m.getTimestamp());
-            if (d >= startDate && d <= endDate) {
-                cmpSum += m.getValue();
-                cmpCount++;
-            }
-        }
-
-        // si au moins une mesure valide pour chaque capteur
-        if (refCount > 0 && cmpCount > 0) {
-            double refAvg = refSum / refCount;
-            double cmpAvg = cmpSum / cmpCount;
-            double diff = abs(refAvg - cmpAvg);
-            totalDifference += diff;
-            attributeCount++;
-        }
-    }
-
-    // si pas de données exploitables
-    if (attributeCount == 0) {
-        return 0.0;  
-    }
-
-    double averageDifference = totalDifference / attributeCount; // attributCount vaut toujours 4
-    return 100.0 / (1.0 + averageDifference);  
-}
-
-
-// This method compares a given sensor to all other loaded sensors and computes a similarity score
-// based on recent measurements and a defined date range. It returns a sorted list of sensor IDs
-// with their similarity scores, showing only the top 5 most similar sensors.
-vector<pair<string, double>> Model::compareSensors(const string& referenceSensorID, const Date& startDate, const Date& endDate)
-{
-    vector<pair<string, double>> similarityScores; // A vector allows us to sort sensors by similarity score
-
-    Sensor referenceSensor = getSensor(referenceSensorID);
-    if (referenceSensor.getSensorId().empty()) {
-        cerr << "Reference sensor not found!" << endl;
-        return similarityScores;
-    }
-
-    for (const auto& [sensorID, sensor] : sensors)
-    {
-        if (sensorID == referenceSensorID) // Avoid comparing the sensor with itself
-            continue;
-
-        double score = calculateSimilarity(referenceSensor, sensor, startDate, endDate);
-        similarityScores.emplace_back(sensorID, score);
-    }
-
-    sort(similarityScores.begin(), similarityScores.end(),
-         [](const auto& a, const auto& b) {
-             return a.second > b.second;
-         });
-
-    // Keep only the top 5 elements, or fewer if there are less than 5
-    if (similarityScores.size() > 5) {
-        similarityScores.resize(5); // Resize the vector to keep only the top 5
-    }
-
-    return similarityScores;
-}
-    
-
-
-
-// float Model::airQualityGeo (float latitude , float logitude , float radius =0 , time_t start_date , time_t end_date) 
-    // {
-    //     Sensor sensorSpecifique ; 
-        
-
-        
-    // }
-
 

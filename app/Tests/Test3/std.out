@@ -1,1 +1,24 @@
-The sensor Sensor3 is not working properly. Its data will no longer be taken into account.
+Welcome to AirWatcher App!
+
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Enter user login: 
+AirWatcher App -  Welcome to AirWatcher ! Let's get started.
+
+AirWatcher App - Air Cleaner Provider Menu 
+
+1) - Show statistics for a specific sensor. 
+2) - Sign Out.
+
+Select a functionality by choosing the corresponding number:
+
+
+AirWatcher App- You signed out successfully !
+
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Exiting...

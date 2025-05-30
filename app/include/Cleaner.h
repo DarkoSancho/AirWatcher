@@ -14,7 +14,6 @@
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
 #include <ctime>
-#include "Date.h"
 using namespace std;
 
 //------------------------------------------------------------- Constantes
@@ -38,19 +37,19 @@ public:
     string getCleanerId() const;
     float getLatitude() const;
     float getLongitude() const;
-    Date getStartTime() const;
-    Date getEndTime() const;
+    string getStartTime() const;
+    string getEndTime() const;
 
     //setters 
     void setCleanerId(const string cleanerId);
     void setLatitude(const float latitude);    
     void setLongitude(const float longitude);    
-    void setStartTime(const Date startTime);    
-    void setEndTime(const Date endTime);
+    void setStartTime(const string startTime);    
+    void setEndTime(const string endTime);
 
     
     // méthode qui indique si un cleaner était actif à un instant "time" donné 
-    bool isActiveAt(Date time) ; 
+    bool isActiveAt(string time) ; 
     
 
 
@@ -61,7 +60,7 @@ public:
     // Contrat :
     //
 
-    Cleaner (string cleanerId, float latitude, float longitude, Date startTime, Date endTime);
+    Cleaner (string cleanerId, float latitude, float longitude, string startTime, string endTime);
     // Mode d'emploi :
     //
     // Contrat :
@@ -82,8 +81,8 @@ protected:
     string cleanerId;
     float latitude;
     float longitude;
-    Date startTime;
-    Date endTime;
+    string startTime;
+    string endTime;
 };
 
 //-------------------------------- Autres définitions dépendantes de <Cleaner>

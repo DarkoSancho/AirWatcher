@@ -1,25 +1,27 @@
-===== AIRWATCHER — ADMIN MENU =====
-1. Check if a sensor is functioning correctly
+Welcome to AirWatcher App!
+
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Enter user login: 
+AirWatcher App -  Welcome to AirWatcher ! Let's get started.
+
+AirWatcher App - Government Agency Menu 
+
+1) - Calculate mean air quality over area.
+2) - Show statistics for a specific sensor. 
+3) - Score and rank sensors by similarity.
+4) - Performance tests.
+5) - Sign Out.
+
+Select a functionality by choosing the corresponding number:
 
 
-2. Calculate the average air quality in a geographic area
+AirWatcher App- You signed out successfully !
 
-
-3. Compare sensors with each other (similarity)
-
-
-4. Estimate air quality at a specific geographic point
-
-
-5. Analyze the effect of an air purifier
-
-
-6. Collect data from a specific sensor
-
-
-7. Measure the performance of the algorithms
-
-
-8. Exit
-
-Enter your choice:
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Exiting...

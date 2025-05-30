@@ -21,7 +21,7 @@ enum PrivilegeLevel
     ADMIN = 0,
     PRIVATE_INDIVIDUAL = 1,
     PROVIDER = 2,
-    GOVERNMENT_AGENCY = 3
+    PUBLIC_INSTITUTION = 3
 };
 
 //------------------------------------------------------------------------

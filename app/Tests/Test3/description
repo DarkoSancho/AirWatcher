@@ -1,1 +1,1 @@
-This test ensures that the menu is correctly displayed in the console when the user enters the role 'government official', and then verifies whether sensor 3 is functioning correctly.
+Login as provider0 (provider), show menu, logout, exit.
