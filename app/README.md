@@ -6,18 +6,16 @@
 Authors: Asmae TOUITI, Ines CHEBBI, Tom SANCHEZ, Yassine TAHARSTE, Omar TKITO 
 
 
-**Project Structure**
+## Project Structure
 
 This application follows an MVC architecture.
 
-	Model: Manages data (users, sensors, measurements).
-
-	View: Handles input/output interactions.
-
-	Controller: Manages the application flow and user interaction logic.
+- **Model**: Manages data (users, sensors, measurements).
+- **View**: Handles input/output interactions.
+- **Controller**: Manages the application flow and user interaction logic.
 
 
-**Getting Started**
+## Getting Started
 
 System Requirements: You likely meet them if you're running Linux already (most distributions come with a modern processor and enough RAM).
 Installation: The GNU C++ compiler (g++) is often pre-installed. Verify with g++ --version in your terminal. If not installed, use your package manager (e.g., sudo apt install build-essential on Ubuntu/Debian).
@@ -33,12 +31,12 @@ After launching the app, the user is prompted to log in with a username (e.g., g
 Once logged in, a menu corresponding to the user type is displayed. The user can then select a functionality by typing its number.
 Upon successful authentication, you will gain access to the AirWatcher console interface, and be able to run functionalities.
 
-    2. Cleaning Up
-To remove the object files (.o) and the executable, run: "make clean"
+    2. Cleaning Up - To remove the object files (.o) and the executable, run: "make clean"
+    
 This will clean up the build artifacts and leave your directory tidy.
 
 
-**Main Features**
+## Main Features
 
 The application supports three types of users, each with distinct privileges:
 
@@ -47,15 +45,15 @@ The application supports three types of users, each with distinct privileges:
 
 	- Air Quality Over Area: Calculate average air quality in a geographical area within a date range. Users can define the area by radius around a central point, by specifying a latitude and a longitude.
 
-	Visualize measurements for a specific sensor and attribute (NO2, PM10, SO2, O3): View statistics for a selected sensor and attribute over a date range.
+	- Visualize measurements for a specific sensor and attribute (NO2, PM10, SO2, O3): View statistics for a selected sensor and attribute over a date range.
 
-	Sensor Similarity Ranking: Rank all sensors based on their similarity to a chosen sensor during a specified period. This helps identify sensors with similar air quality patterns, 	potentially indicating similar environmental conditions.
+	- Sensor Similarity Ranking: Rank all sensors based on their similarity to a chosen sensor during a specified period. This helps identify sensors with similar air quality patterns, 	potentially indicating similar environmental conditions.
 
-	Performance Tests: Run internal performance tests of the main algorithms used.
+	- Performance Tests: Run internal performance tests of the main algorithms used.
 
-	Logout.
+	- Logout.
 
-# Interacting using the Console Interface :
+**Interacting using the Console Interface :**
 The console interface presents a menu with options tailored to your user role. Use the corresponding numbers or keywords to select the desired functionality. Each option might prompt for additional information, such as sensor IDs, geographical coordinates, or timeframes. The application will display the results of your queries on the console screen.
 
 
@@ -75,23 +73,23 @@ The providers have access to the same functionalities as a private individual.
 ## Application handling : 
 
 The controller manages:
--User sign-in and privilege assignment.
--Input validation for:
-	-Sensor ID
-	-Attributes (NO2, PM10, SO2, O3)
-	-Dates (in YYYY-MM-DD format)
-	-Geographic coordinates (latitude, longitude, radius)
-	-Delegation to the model for data retrieval and processing.
-	-Interaction with the view for displaying results and error messages.
+- User sign-in and privilege assignment.
+- Input validation for:
+	- Sensor ID
+	- Attributes (NO2, PM10, SO2, O3)
+	- Dates (in YYYY-MM-DD format)
+	- Geographic coordinates (latitude, longitude, radius)
+	- Delegation to the model for data retrieval and processing.
+	- Interaction with the view for displaying results and error messages.
 
 ## Performance Testing
 Only available to Government Agency users, this feature allows:
-	-Average air quality computation benchmarking.
-	-Sensor similarity ranking performance test.
-	-Full-scale sensor reading extraction test.
+- Average air quality computation benchmarking.
+- Sensor similarity ranking performance test.
+- Full-scale sensor reading extraction test.
 	
 
-## Sample Menu (Government)
+## Sample Menu (Government Agency Menu)
 
 AirWatcher App - Government Agency Menu
 
