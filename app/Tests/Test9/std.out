@@ -1,0 +1,79 @@
+Welcome to AirWatcher App!
+
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Enter user login: 
+AirWatcher App -  Welcome to AirWatcher ! Let's get started.
+
+AirWatcher App - Government Agency Menu 
+
+1) - Calculate mean air quality over area.
+2) - Show statistics for a specific sensor. 
+3) - Score and rank sensors by similarity.
+4) - Performance tests.
+5) - Sign Out.
+
+Select a functionality by choosing the corresponding number:
+
+AirWatcher App - Showing all the readings of a Sensor
+Enter Sensor ID (in the format SensorXX): 
+Do you want to set a threshold for the attribute O3 ? (yes/no): 
+Do you want to set a threshold for the attribute NO2 ? (yes/no): 
+Do you want to set a threshold for the attribute SO2 ? (yes/no): 
+Do you want to set a threshold for the attribute PM10 ? (yes/no): 
+Enter Start Date in format YYYY-MM-DD : 
+Enter End Date in format YYYY-MM-DD : 
+---- Averages ----
+NO2 : 53
+O3 : 63
+PM10 : 45
+SO2 : 47
+---- Minimum ----
+NO2 : 49.7
+O3 : 61.11
+PM10 : 42.97
+SO2 : 44.85
+---- Maximum ----
+NO2 : 57.1
+O3 : 67.59
+PM10 : 49.69
+SO2 : 51.18
+---- Standard deviation ----
+NO2 : 1.5708
+O3 : 1.76553
+PM10 : 1.88575
+SO2 : 1.70722
+---- Exceedances ----
+NO2 : no data / No threshold provided
+O3 : no data / No threshold provided
+PM10 : no data / No threshold provided
+SO2 : no data / No threshold provided
+---- Date and value ATMO min ----
+01/01/2019 12:00:00 : 7
+---- Date and value ATMO max ----
+04/05/2019 12:00:00 : 8
+NO2 : 53
+O3 : 63
+PM10 : 45
+SO2 : 47
+
+AirWatcher App - Government Agency Menu 
+
+1) - Calculate mean air quality over area.
+2) - Show statistics for a specific sensor. 
+3) - Score and rank sensors by similarity.
+4) - Performance tests.
+5) - Sign Out.
+
+Select a functionality by choosing the corresponding number:
+
+
+AirWatcher App- You signed out successfully !
+
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Exiting...

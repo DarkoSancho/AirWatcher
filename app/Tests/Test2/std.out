@@ -23,14 +23,12 @@ Enter Longitude:
 Enter Radius value : 
 Enter Start Date in format YYYY-MM-DD : 
 Enter End Date in format YYYY-MM-DD : 
-
 AirWatcher App - Mean air quality over the selected area : 
 Attribute || Mean value
 NO2       || 45.599
 O3        || 48.6201
 PM10      || 49.4302
 SO2       || 53.0095
-AirWatcher App - Execution Time : 17 ms.
 
 AirWatcher App - Government Agency Menu 
 
@@ -41,7 +39,6 @@ AirWatcher App - Government Agency Menu
 5) - Sign Out.
 
 Select a functionality by choosing the corresponding number:
-
 
 AirWatcher App- You signed out successfully !
 

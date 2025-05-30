@@ -265,7 +265,7 @@ bool Controller :: selectFunctionality (int functionality) {
                         break;
                 }
                 view.displayMeanAirQuality(mean);
-                view.printMessage("Execution Time : " + to_string(time) + " ms.");
+                // view.printMessage("Execution Time : " + to_string(time) + " ms.");
                 break;                
             }
 
@@ -338,7 +338,7 @@ bool Controller :: selectFunctionality (int functionality) {
                     int numberOfSensorsCompared = allSensors.size()-1;
 
                     view.displaySensorSimilarityResults(results) ; 
-                    view.printMessage("Execution Time : " + to_string(time) + " ms - Compared with: " + to_string(numberOfSensorsCompared) + " sensors.");
+                    // view.printMessage("Execution Time : " + to_string(time) + " ms - Compared with: " + to_string(numberOfSensorsCompared) + " sensors.");
 
                     break;
                 }

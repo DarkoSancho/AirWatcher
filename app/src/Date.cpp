@@ -194,7 +194,17 @@ Date::Date(std::string Sdate)
     // Extraction de la date : yyyy-mm-dd
     size_t pos1 = datePart.find('-');
     size_t pos2 = datePart.find('-', pos1 + 1);
-
+    // Vérification du format de la date (YYYY-MM-DD)
+    while (pos1 == std::string::npos || pos2 == std::string::npos || datePart.length() != 10) {
+        std::cerr << "Format de date invalide dans la chaîne : " << Sdate << std::endl;
+        std::cerr << "Veuillez entrer une date au format YYYY-MM-DD HH:MM:SS : "<<endl;
+        std::getline(std::cin, Sdate);
+        posEspace = Sdate.find(' ');
+        datePart = Sdate.substr(0, posEspace);
+        timePart = Sdate.substr(posEspace + 1);
+        pos1 = datePart.find('-');
+        pos2 = datePart.find('-', pos1 + 1);
+    }
     annee = std::stoi(datePart.substr(0, pos1));
     mois = std::stoi(datePart.substr(pos1 + 1, pos2 - pos1 - 1));
     jour = std::stoi(datePart.substr(pos2 + 1));
@@ -202,7 +212,6 @@ Date::Date(std::string Sdate)
     // Extraction de l’heure : hh:mm:ss
     pos1 = timePart.find(':');
     pos2 = timePart.find(':', pos1 + 1);
-
     heure = std::stoi(timePart.substr(0, pos1));
     minute = std::stoi(timePart.substr(pos1 + 1, pos2 - pos1 - 1));
     seconde = std::stoi(timePart.substr(pos2 + 1));

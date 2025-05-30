@@ -1,0 +1,4 @@
+Error: cannot open file ressources/cleaners.csv: No such file or directory
+Error: cannot open file ressources/sensors.csv: No such file or directory
+Error: cannot open file ressources/users.csv
+AirWatcher App - Error: You entered invalid user name.

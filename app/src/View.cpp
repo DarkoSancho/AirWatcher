@@ -25,25 +25,25 @@ void View::printMessage(string line){
 }
 
 void View::printMessageErreur(const string message) {
-    cerr << "\nAirWatcher App - Error: " << message << endl;
+    cerr << "AirWatcher App - Error: " << message << endl;
 }
 
 
 void View::printSignInConfirmation(bool SignedIn) {
     if (SignedIn) {
-        cout << "\nAirWatcher App - You signed in succesfully. Let's get started with the AirWatcher App!" << endl;
+        cout <<"AirWatcher App - You signed in succesfully. Let's get started with the AirWatcher App!" << endl;
     } else {
-        cerr << "\nAirWatcher App - Sign-in failed. An error occured. Please try again." << endl;
+        cerr <<"AirWatcher App - Sign-in failed. An error occured. Please try again." << endl;
     }
 }
 
 void View::printSignOutConfirmation() {
-    cout << "\nAirWatcher App- You signed out successfully !" << endl;
+    cout << "AirWatcher App- You signed out successfully !" << endl;
 
 }
 
 void View::displayMeanAirQuality(vector<float> meanAirQuality){
-    cout << "\nAirWatcher App - Mean air quality over the selected area : " << endl; 
+    cout <<"AirWatcher App - Mean air quality over the selected area : " << endl; 
     cout << "Attribute" << " || " << "Mean value" << endl;
     cout << "NO2      " << " || " << meanAirQuality[0] << endl;
     cout << "O3       " << " || " << meanAirQuality[1] << endl;
@@ -54,7 +54,7 @@ void View::displayMeanAirQuality(vector<float> meanAirQuality){
 
 
 void View::displayScoreAndRank(const vector<pair<string, double>>& rankingVector) {
-    cout << "\nAirWatcher App - Sensor ranking by similarity to given reference (higher is more similar)" << endl; 
+    cout << "AirWatcher App - Sensor ranking by similarity to given reference (higher is more similar)" << endl; 
     cout << "Rank" << " || " << "Sensor ID" << " || " << "Similarity score" << endl;
 
     int rank = 1;
@@ -66,7 +66,7 @@ void View::displayScoreAndRank(const vector<pair<string, double>>& rankingVector
 
 // méthode de Yassine
 void View::displaySensorSimilarityResults(const vector<pair<string, double>>& results) {
-    cout << "\n==== RESULTS ====\n" << endl;
+    cout << "==== RESULTS ====" << endl;
     
     int rank = 1;
     for (const auto& pair : results) {
@@ -176,7 +176,7 @@ void View :: afficherStats(const Stats& S) {
 // tests de performance 
 
 int View::displayPerformanceTestMenu() {
-    cout << "\n===== PERFORMANCE TEST MENU =====\n\n";
+    cout << "===== PERFORMANCE TEST MENU =====\n\n";
     cout << "Select algorithms to test :\n";
     cout << "1. Average calculation in a zone\n";
     cout << "2. Sensor comparison\n";

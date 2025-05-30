@@ -1,1 +1,0 @@
-Login as GOUV, stats around point without sensor, logout, exit.

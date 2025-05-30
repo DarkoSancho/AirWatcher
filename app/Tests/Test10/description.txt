@@ -1,1 +1,0 @@
-Try to login with WRONGUSER, expect error, then exit.
