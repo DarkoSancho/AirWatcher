@@ -1,0 +1,47 @@
+Welcome to AirWatcher App!
+
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Enter user login: 
+AirWatcher App -  Welcome to AirWatcher ! Let's get started.
+
+AirWatcher App - Government Agency Menu 
+
+1) - Calculate mean air quality over area.
+2) - Show statistics for a specific sensor. 
+3) - Score and rank sensors by similarity.
+4) - Performance tests.
+5) - Sign Out.
+
+Select a functionality by choosing the corresponding number:
+
+AirWatcher App - Ranking sensors by similarity
+Enter the reference Sensor ID: 
+Enter Start Date in format YYYY-MM-DD  : 
+Enter End Date in format YYYY-MM-DD : 
+==== RESULTS ====
+Rank : 1, SensorId : Sensor69, Similarity Score : 13.3882
+Rank : 2, SensorId : Sensor48, Similarity Score : 13.16
+Rank : 3, SensorId : Sensor58, Similarity Score : 13.0836
+Rank : 4, SensorId : Sensor12, Similarity Score : 13.0401
+Rank : 5, SensorId : Sensor49, Similarity Score : 12.7564
+
+AirWatcher App - Government Agency Menu 
+
+1) - Calculate mean air quality over area.
+2) - Show statistics for a specific sensor. 
+3) - Score and rank sensors by similarity.
+4) - Performance tests.
+5) - Sign Out.
+
+Select a functionality by choosing the corresponding number:
+
+AirWatcher App- You signed out successfully !
+
+Menu:
+1. Sign In
+2. Exit
+Select your choice: 
+Exiting...
