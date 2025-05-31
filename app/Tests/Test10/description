@@ -1,1 +1,1 @@
-Login as GOV, select stats for sensor 50, no, logout, exit.
+Tests the application's response when requesting statistics for a sensor with an end date earlier than the start date.

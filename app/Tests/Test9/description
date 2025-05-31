@@ -1,1 +1,1 @@
-Login as GOV, select stats for sensor , no, logout, exit.
+Tests the flow of logging in as a government user , attempting to access statistics for a sensor with available data, then logging out and exiting the application.

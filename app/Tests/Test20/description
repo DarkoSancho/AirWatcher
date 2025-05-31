@@ -1,1 +1,1 @@
-Try to enter an impossible lattitude (10000)
+Tests the application's handling of an invalid latitude input (e.g., 10000).

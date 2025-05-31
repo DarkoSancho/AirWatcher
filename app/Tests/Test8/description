@@ -1,1 +1,1 @@
-Login as Provider1, select stats for sensor , 1 thresold O3 but no data on it, logout, exit.
+Tests the flow of logging in as Provider1, selecting statistics for a sensor with one threshold (O₃) but no available data, then logging out and exiting the application.

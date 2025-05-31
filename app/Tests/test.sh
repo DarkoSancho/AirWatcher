@@ -21,9 +21,11 @@ cd $Directory
 
 if [ -r "description" ]
 then
+  echo
   echo "-----------------------------------------------------------"
   echo "Description :"
   fold description -w 60 -s
+  echo
   echo "-----------------------------------------------------------"
 fi
 

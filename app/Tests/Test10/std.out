@@ -25,6 +25,8 @@ Do you want to set a threshold for the attribute SO2 ? (yes/no):
 Do you want to set a threshold for the attribute PM10 ? (yes/no): 
 Enter Start Date in format YYYY-MM-DD : 
 Enter End Date in format YYYY-MM-DD : 
+Enter Start Date in format YYYY-MM-DD : 
+Enter End Date in format YYYY-MM-DD : 
 ---- Averages ----
 NO2 : 53
 O3 : 63
@@ -68,7 +70,6 @@ AirWatcher App - Government Agency Menu
 5) - Sign Out.
 
 Select a functionality by choosing the corresponding number:
-
 
 AirWatcher App- You signed out successfully !
 

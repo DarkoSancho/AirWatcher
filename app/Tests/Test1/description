@@ -1,1 +1,1 @@
-Login as government user (GOUV), show menu, logout, exit.
+Tests the full user flow: logging in as a government user , displaying the main menu, logging out, and exiting the application cleanly.

@@ -1,1 +1,1 @@
-Login as FOU1, select stats for  sensor (good sensor), logout, exit.
+Tests the flow of logging in as provider1, viewing statistics for a valid sensor (good sensor), then logging out and exiting the application.

@@ -142,13 +142,21 @@ bool Controller :: selectFunctionality (int functionality) {
                             seuils[Attr[i]] = seuil;
                         }                      
                     }
-                    string startInput = view.getStringInput("Enter Start Date in format YYYY-MM-DD : ") ; 
-                    Date startDate =  Date(startInput) ; 
-                    string endInput = view.getStringInput("Enter End Date in format YYYY-MM-DD : ") ; 
-                    Date endDate =  Date(endInput) ; 
+                    string startInput, endInput;
+                    Date startDate, endDate;
+                    while (true) {
+                        startInput = view.getStringInput("Enter Start Date in format YYYY-MM-DD : ") ; 
+                        startDate = Date(startInput) ; 
+                        endInput = view.getStringInput("Enter End Date in format YYYY-MM-DD : ") ; 
+                        endDate = Date(endInput) ; 
+                        if (startDate < endDate) {
+                            break;
+                        } else {
+                            view.printMessageErreur("Start date must be before end date. Please try again.");
+                        }
+                    }
 
 
-                    // saisi des seuils définis par l'utilisateur 
 
                     Stats s = model.getData(sensorId, startDate, endDate, seuils[Attr[0]], seuils[Attr[1]], seuils[Attr[2]], seuils[Attr[3]]) ; 
                     view.afficherStats(s) ; 
@@ -192,15 +200,19 @@ bool Controller :: selectFunctionality (int functionality) {
                             seuils[Attr[i]] = seuil;
                         }                      
                     }
-                    string startInput = view.getStringInput("Enter Start Date in format YYYY-MM-DD : ") ; 
-                    Date startDate =  Date(startInput) ; 
-                    string endInput = view.getStringInput("Enter End Date in format YYYY-MM-DD : ") ; 
-                    Date endDate =  Date(endInput) ; 
-
-
-                    // saisi des seuils définis par l'utilisateur 
-
-
+                    string startInput, endInput;
+                    Date startDate, endDate;
+                    while (true) {
+                        startInput = view.getStringInput("Enter Start Date in format YYYY-MM-DD : ") ; 
+                        startDate = Date(startInput) ; 
+                        endInput = view.getStringInput("Enter End Date in format YYYY-MM-DD : ") ; 
+                        endDate = Date(endInput) ; 
+                        if (startDate <  endDate) {
+                            break;
+                        } else {
+                            view.printMessageErreur("Start date must be before end date. Please try again.");
+                        }
+                    }
                     Stats s = model.getData(sensorId, startDate, endDate, seuils[Attr[0]], seuils[Attr[1]], seuils[Attr[2]], seuils[Attr[3]]) ; 
                     view.afficherStats(s) ; 
                     break; 
@@ -250,10 +262,19 @@ bool Controller :: selectFunctionality (int functionality) {
                     break ; 
                 }
 
-                string startInput = view.getStringInput("Enter Start Date in format YYYY-MM-DD : ") ; 
-                Date startDate =  Date(startInput) ; 
-                string endInput = view.getStringInput("Enter End Date in format YYYY-MM-DD : ") ; 
-                Date endDate =  Date(endInput) ; 
+                string startInput, endInput;
+                Date startDate, endDate;
+                while (true) {
+                    startInput = view.getStringInput("Enter Start Date in format YYYY-MM-DD : ") ; 
+                    startDate = Date(startInput) ; 
+                    endInput = view.getStringInput("Enter End Date in format YYYY-MM-DD : ") ; 
+                    endDate = Date(endInput) ; 
+                    if (startDate <  endDate) {
+                        break;
+                    } else {
+                        view.printMessageErreur("Start date must be before end date. Please try again.");
+                    }
+                }
 
                 time_point<high_resolution_clock> start = high_resolution_clock::now();
                 vector<float> mean = model.airQualityGeo(lat, longitude, startDate, endDate, radius); // à poursuivre quand j'aurais les méthodes des autres 
@@ -294,13 +315,19 @@ bool Controller :: selectFunctionality (int functionality) {
                             seuils[Attr[i]] = seuil;
                         }                      
                     }
-                    string startInput = view.getStringInput("Enter Start Date in format YYYY-MM-DD : ") ; 
-                    Date startDate =  Date(startInput) ; 
-                    string endInput = view.getStringInput("Enter End Date in format YYYY-MM-DD : ") ; 
-                    Date endDate =  Date(endInput) ; 
-
-
-                    // saisi des seuils définis par l'utilisateur 
+                    string startInput, endInput;
+                    Date startDate, endDate;
+                    while (true) {
+                        startInput = view.getStringInput("Enter Start Date in format YYYY-MM-DD : ") ; 
+                        startDate = Date(startInput) ; 
+                        endInput = view.getStringInput("Enter End Date in format YYYY-MM-DD : ") ; 
+                        endDate = Date(endInput) ; 
+                        if (startDate <  endDate) {
+                            break;
+                        } else {
+                            view.printMessageErreur("Start date must be before end date. Please try again.");
+                        }
+                    }
 
                     Stats s = model.getData(sensorId, startDate, endDate, seuils[Attr[0]], seuils[Attr[1]], seuils[Attr[2]], seuils[Attr[3]]) ; 
                     view.afficherStats(s) ; 
@@ -323,10 +350,19 @@ bool Controller :: selectFunctionality (int functionality) {
 
                
 
-                    string startInput = view.getStringInput("Enter Start Date in format YYYY-MM-DD  : ") ; // ici mettre des tirets 
-                    Date startDate =  Date(startInput) ; 
-                    string endInput = view.getStringInput("Enter End Date in format YYYY-MM-DD : ") ; 
-                    Date endDate =  Date(endInput) ; 
+                    string startInput, endInput;
+                    Date startDate, endDate;
+                    while (true) {
+                        startInput = view.getStringInput("Enter Start Date in format YYYY-MM-DD : ") ; 
+                        startDate = Date(startInput) ; 
+                        endInput = view.getStringInput("Enter End Date in format YYYY-MM-DD : ") ; 
+                        endDate = Date(endInput) ; 
+                        if (startDate <  endDate) {
+                            break;
+                        } else {
+                            view.printMessageErreur("Start date must be before end date. Please try again.");
+                        }
+                    }
 
                     
                     time_point<high_resolution_clock> start = high_resolution_clock::now();

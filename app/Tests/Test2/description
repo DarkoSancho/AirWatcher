@@ -1,1 +1,1 @@
-Login as GOUV, choose functionality 1 (mean air quality), logout, exit.
+Tests the flow of logging in as a government user , selecting the mean air quality functionality, logging out, and exiting the application.

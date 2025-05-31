@@ -1,1 +1,1 @@
-Login as provider0 (provider), show menu, logout, exit.
+Tests the flow of logging in as provider0 (a provider user), displaying the main menu, logging out, and exiting the application.

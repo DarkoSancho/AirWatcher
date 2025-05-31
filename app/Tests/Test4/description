@@ -1,0 +1,1 @@
+Tests the flow of logging in as Provider1, attempting to access statistics for an unknown sensor , then logging out and exiting the application.
