@@ -329,8 +329,14 @@ bool Controller :: selectFunctionality (int functionality) {
                         }
                     }
 
+                    time_point<high_resolution_clock> start = high_resolution_clock::now();
                     Stats s = model.getData(sensorId, startDate, endDate, seuils[Attr[0]], seuils[Attr[1]], seuils[Attr[2]], seuils[Attr[3]]) ; 
+                    time_point<high_resolution_clock> end = high_resolution_clock::now();
+                    long long time = duration_cast<milliseconds>(end - start).count();
+                    
                     view.afficherStats(s) ; 
+                    //view.printMessage("Execution Time : " + to_string(time) + " ms.");
+
                     break; 
                 
                 }
@@ -484,7 +490,7 @@ void Controller::runTest_AverageCalculation() {
         long long time = measureExecutionTime([&]() {
             model.airQualityGeo(44.84, -0.57, start, end, 5.0);
         });
-        view.printMessage("[" + sensorId + "], Time: " + to_string(time) + " ms");
+        view.printMessage("[" + sensorId + "], Time: " + to_string(time) + " ms.");
     }
 
     view.printMessage(">>> FIN DU TEST 1 <<<\n\n");
@@ -528,20 +534,21 @@ void Controller::runTest_SensorComparison() {
 // Retour : aucun (affiche les résultats via la vue)
 void Controller::runTestSensorReadings() {
     vector<string> sensors = {"Sensor1", "Sensor8", "Sensor14"};
-    string attribute = "O3";
+    Date start("2019-01-01");
+    Date end("2020-01-01");
 
     view.printMessage(">>> TEST 3: Sensor readings by attribute <<<\n");
-    view.printMessage("Attribute: " + attribute);
+    view.printMessage("Period: from 2019-01-01 to 2020-01-01");
+    view.printMessage("Thresholds of 50 for all pollutants");
     view.printMessage("Number of tests : " + to_string(sensors.size()));
 
     for (const string& id : sensors) {
         int count = 0;
         long long time = measureExecutionTime([&]() {
-            vector<Measurement> result = model.getMeasurements(id, -1, attribute);
-            count = result.size();
+            Stats s = model.getData(id, start, end, 50, 50, 50, 50) ; 
         });
 
-        view.printMessage("[" + id + "], Time: " + to_string(time) + " ms - Measurements: " + to_string(count));
+        view.printMessage("[" + id + "], Time: " + to_string(time) + " ms.");
     }
     
     view.printMessage(">>> FIN DU TEST 3 <<<\n\n");
