@@ -3,7 +3,7 @@
 **AirWatcher** is a C++ application designed to monitor and analyze air quality data from multiple sensors. It provides a role-based interface for different users (private individuals, air cleaner providers, and government agencies), to explore air quality statistics, visualize data, and test system performance, depending on their access level.
 
 ## Authors
-Authors: Ines CHEBBI, Tom SANCHEZ,  Yassine TAHARSTE, Omar TKITO, Asmae TOUITI 
+Authors: Ines CHEBBI, Tom SANCHEZ,  Yassine TAHARASTE, Omar TKITO, Asmae TOUITI 
 
 
 ## Project Structure
