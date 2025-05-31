@@ -17,16 +17,9 @@ AirWatcher App - Government Agency Menu
 
 Select a functionality by choosing the corresponding number:
 
-AirWatcher App - Ranking sensors by similarity
-Enter the reference Sensor ID: 
-Enter Start Date in format YYYY-MM-DD  : 
-Enter End Date in format YYYY-MM-DD : 
-==== RESULTS ====
-Rank : 1, SensorId : Sensor69, Similarity Score : 13.3882
-Rank : 2, SensorId : Sensor48, Similarity Score : 13.16
-Rank : 3, SensorId : Sensor58, Similarity Score : 13.0836
-Rank : 4, SensorId : Sensor12, Similarity Score : 13.0401
-Rank : 5, SensorId : Sensor49, Similarity Score : 12.7564
+AirWatcher App - Mean air quality over area
+Enter Latitude value : 
+Enter Longitude: 
 
 AirWatcher App - Government Agency Menu 
 
