@@ -179,7 +179,7 @@ Date::Date ( int jj, int mm, int aaaa, int h, int m, int s )
 
 
 
-Date::Date(std::string Sdate)
+Date::Date(string Sdate)
 // Exemple attendu : "2025-05-12 10:25:30"
 {
 #ifdef MAP
@@ -188,14 +188,14 @@ Date::Date(std::string Sdate)
 
     // Découper en deux parties : date et heure
     size_t posEspace = Sdate.find(' ');
-    std::string datePart = Sdate.substr(0, posEspace);
-    std::string timePart = Sdate.substr(posEspace + 1);
+    string datePart = Sdate.substr(0, posEspace);
+    string timePart = Sdate.substr(posEspace + 1);
 
     // Extraction de la date : yyyy-mm-dd
     size_t pos1 = datePart.find('-');
     size_t pos2 = datePart.find('-', pos1 + 1);
     // Vérification du format de la date (YYYY-MM-DD)
-    while (pos1 == std::string::npos || pos2 == std::string::npos || datePart.length() != 10) {
+    while (pos1 == string::npos || pos2 == string::npos || datePart.length() != 10) {
         std::cerr << "Format de date invalide dans la chaîne : " << Sdate << std::endl;
         std::cerr << "Veuillez entrer une date au format YYYY-MM-DD HH:MM:SS : "<<endl;
         std::getline(std::cin, Sdate);
@@ -221,8 +221,13 @@ Date::Date(std::string Sdate)
 
 
 Date::Date ( )
-    : jour(1), mois(1), annee(1970), heure(0), minute(0), seconde(0)
 {
+    jour = 0;
+    mois = 0;
+    annee = 0;
+    heure = 0;
+    minute = 0;
+    seconde = 0;
 #ifdef MAP
     cout << "Appel au constructeur par défaut de <Date>" << endl;
 #endif
