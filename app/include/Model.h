@@ -141,8 +141,48 @@ public:
  */
 
     vector<pair<string, double>> compareSensors( const string& referenceSensorID, const Date& startDate,  const Date& endDate);
+    /**
+     * @brief Compares a given sensor to all other loaded sensors and computes a similarity score.
+     * 
+     * @param referenceSensorID ID of the reference sensor.
+     * @param startDate Start date of the comparison period.
+     * @param endDate End date of the comparison period.
+     * @return std::vector<std::pair<std::string, double>> A sorted vector of pairs (sensor ID, similarity score),
+     *         containing up to the 5 most similar sensors, ordered by descending similarity.
+     * 
+     * @details
+     * This method analyzes the measurements of the reference sensor over the specified time range
+     * and compares them with measurements from all other loaded sensors.
+     * 
+     * For each sensor, a similarity score is computed based on the proximity of measured values.
+     * The result is a sorted list of the most similar sensors:
+     *   - Each entry is a pair (sensor ID, similarity score).
+     *   - The list is sorted in descending order of similarity score.
+     *   - Only the top 5 most similar sensors are included in the result.
+    */
+
 
     double calculateSimilarity(const Sensor& referenceSensor, const Sensor& compareSensor, const Date& startDate, const Date& endDate);
+    /**
+     * @brief Calculates a similarity score between two sensors based on the average of their measurements.
+     * 
+     * @param referenceSensor The reference sensor to compare against.
+     * @param compareSensor The sensor being compared to the reference sensor.
+     * @param startDate Start date of the measurement period.
+     * @param endDate End date of the measurement period.
+     * @return double A similarity score between 0.0 and 100.0, where a score closer to 100 indicates higher similarity.
+     * 
+     * @details
+     * The method compares the average values of the following four attributes: O3, NO2, SO2, and PM10.
+     * Only measurements within the specified date range are considered.
+     * 
+     * For each attribute, the method computes the average for both sensors, then calculates a normalized similarity score.
+     * The final result is a global similarity score:
+     *   - Ranges from 0.0 (no similarity) to 100.0 (identical average values).
+     *   - Higher values indicate stronger similarity between the two sensors' measurements.
+    */
+
+
     //Retun statistiques: 
     //result.average[x]: Average concentration of x component
     //result.minimum[x]: mininimum concentration of x component
