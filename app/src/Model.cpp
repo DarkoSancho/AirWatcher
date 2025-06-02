@@ -621,7 +621,26 @@ vector<pair<string, double>> Model :: compareSensors( const string& referenceSen
 
 
 
-
+/* This Method computes the average air quality in a given geographic area over a specified time period.
+ * 
+ * This method iterates over all sensors stored in the model. For each sensor located within a given radius 
+ * of a specified point (latitude, longitude), it retrieves all measurements that fall within the given time interval [start, end].
+ * 
+ * It then computes the average values for the following air quality attributes:
+ * - NO2 (Nitrogen Dioxide)
+ * - O3  (Ozone)
+ * - PM10 (Particulate Matter 10µm)
+ * - SO2 (Sulfur Dioxide)
+ * 
+ * @param latitude Latitude of the center point of the area to analyze.
+ * @param longitude Longitude of the center point of the area to analyze.
+ * @param start Start date of the time interval.
+ * @param end End date of the time interval.
+ * @param radius Radius (in the same unit as latitude/longitude) around the center point to include sensors.
+ * 
+ * @return A vector containing the average values in the following order: [NO2, O3, PM10, SO2]. 
+ *         If no sensors are found within the specified radius, returns an empty vector and prints an error message.
+ */
 
 
 vector<float> Model::airQualityGeo(float latitude, float longitude, Date start, Date end,  float radius){
@@ -637,13 +656,13 @@ vector<float> Model::airQualityGeo(float latitude, float longitude, Date start, 
 
     for (auto &sensor : this->sensors)
     {
-        if (isWithinRadius(sensor.second.getLatitude(), sensor.second.getLongitude(), latitude, longitude, radius))
+        if (isWithinRadius(sensor.second.getLatitude(), sensor.second.getLongitude(), latitude, longitude, radius)) //check if the sensor is in the area that we want 
         cout << "Sensor " << sensor.first << " is within radius." << endl;
         {
             sensorCount++;
             for (auto &measurement : this->measurements[sensor.first])
             {
-                if (measurement.getTimestamp() >= start && measurement.getTimestamp() <= end)
+                if (measurement.getTimestamp() >= start && measurement.getTimestamp() <= end) // check if the measurment is in the time interval that we want 
                 {
                     if (measurement.getAttributeId() == "NO2")
                     {
@@ -690,7 +709,7 @@ vector<float> Model::airQualityGeo(float latitude, float longitude, Date start, 
         meanSO2 /= so2Count;
     }
 
-    if (sensorCount == 0)
+    if (sensorCount == 0) //if thare is no sensors in the area
     {
         cerr << "No sensor found in radius " << radius << " at (" << latitude << ", " << longitude << ")" << endl;
         return {};
