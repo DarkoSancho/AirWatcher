@@ -42,6 +42,18 @@ class Model
 
 public:
 //----------------------------------------------------- Méthodes publiques
+
+    /**
+     * @brief Récupère un utilisateur à partir de sa clé d'identification.
+     * 
+     * @param key Clé unique associée à un utilisateur (ex : identifiant, token d'authentification).
+     * @return User Objet représentant l'utilisateur correspondant à la clé fournie.
+     * 
+     * @details
+     * Cette méthode permet d'accéder aux informations d'un utilisateur identifié par une clé donnée.
+     * Elle est utile notamment après une authentification réussie ou pour manipuler des données liées à un utilisateur.
+     * En cas de clé invalide ou inconnue, la méthode lève une exception.
+     */
     User GetUser(string key);
 
     
@@ -202,14 +214,79 @@ public:
 
     virtual ~Model ( );
 
+    /**
+     * @brief Charge les données des capteurs, mesures et attributs depuis des fichiers CSV.
+     * 
+     * @param pathSensorCSV Chemin du fichier CSV contenant les informations des capteurs.
+     * @param pathMeasureCSV Chemin du fichier CSV contenant les mesures des capteurs.
+     * @param pathAttributeCSV Chemin du fichier CSV contenant les attributs (type de polluants, unités, etc.).
+     * @return true Si l'ensemble des fichiers ont été correctement lus et chargés.
+     * @return false En cas d'erreur de lecture, de format invalide ou de données manquantes.
+     * 
+     * @details
+     * Cette méthode initialise les données du système en important les capteurs, leurs mesures et les types d’attributs associés.
+     * Elle vérifie également la cohérence entre les fichiers (par exemple, mesures associées à un capteur existant).
+     * Utile à l'initialisation de l'application pour permettre les traitements ultérieurs (analyses, visualisations).
+     */
     bool loadSensorsData(string pathSensorCSV, string pathMeasureCSV, string pathAttributeCSV);
- 
+
+    /**
+     * @brief Charge les données des purificateurs d’air à partir d’un fichier CSV.
+     * 
+     * @param pathCleanerCSV Chemin du fichier CSV contenant les informations sur les purificateurs.
+     * @return true Si les données sont chargées avec succès.
+     * @return false En cas d’erreur de lecture ou de format incorrect.
+     * 
+     * @details
+     * Cette méthode permet d’ajouter les données relatives aux dispositifs de purification d’air,
+     * tels que leur localisation, et durée d’activité. Ces données sont ensuite
+     * utilisées pour modéliser leur impact sur la qualité de l’air locale.
+     */
     bool loadCleaners(string pathCleanerCSV);
 
+    /**
+     * @brief Charge les données des utilisateurs et des fournisseurs depuis des fichiers CSV.
+     * 
+     * @param pathUserCSV Chemin du fichier CSV contenant les informations des utilisateurs.
+     * @param pathProviderCSV Chemin du fichier CSV contenant les informations des fournisseurs.
+     * @return true Si toutes les données sont chargées correctement.
+     * @return false En cas d’erreur de lecture, de format ou d’incohérence entre les fichiers.
+     * 
+     * @details
+     * Cette méthode initialise les profils des utilisateurs du système.. 
+     */
     bool loadUsersData(string pathUserCSV, string pathProviderCSV);
 
+    /**
+     * @brief Évalue si un capteur est considéré comme fiable.
+     * 
+     * @param sensorId Identifiant du capteur à évaluer.
+     * @return true Si le capteur est jugé fiable.
+     * @return false Si le capteur présente des incohérences, erreurs ou comportements suspects.
+     * 
+     * @details
+     * Cette méthode permet de filtrer les capteurs dont les données peuvent être utilisées pour des analyses précises.
+     * Elle peut se baser sur des critères tels que la régularité des mesures, la cohérence par rapport aux capteurs voisins,
+     * ou encore des signalements d’anomalies. Les capteurs non fiables peuvent être exclus des calculs statistiques.
+     */
     bool isSensorReliable(string sensorId);
 
+    /**
+         * @brief Vérifie si un point géographique se situe dans un rayon donné autour d’un autre point.
+         * 
+         * @param lat1 Latitude du point de référence (en degrés).
+         * @param lon1 Longitude du point de référence (en degrés).
+         * @param lat2 Latitude du point cible (en degrés).
+         * @param lon2 Longitude du point cible (en degrés).
+         * @param radiusKm Rayon à considérer (en kilomètres).
+         * @return true Si le point (lat2, lon2) se trouve à une distance inférieure ou égale à radiusKm de (lat1, lon1).
+         * @return false Sinon.
+         * 
+         * @details
+         * Cette méthode utilise une formule de distance géographique (typiquement la formule de Haversine)
+         * pour déterminer si deux localisations sont proches. Elle est utile pour la recherche de capteurs ou purificateurs
+         * dans un périmètre donné autour d’un utilisateur ou d’un événement.
+     */
     bool isWithinRadius(float lat1, float lon1, float lat2, float lon2, float radiusKm) ; 
 
     vector<float> airQualityGeo (float latitude , float longitude ,  Date start_date , Date end_date ,float radius =0 ) ;  
