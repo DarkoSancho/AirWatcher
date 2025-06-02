@@ -38,13 +38,78 @@ class Controller
 
 public:
 //----------------------------------------------------- Méthodes publiques
-   bool selectFunctionality (int functionality) ; // fait 
+   bool selectFunctionality (int functionality) ; 
+
+    /**
+     * @brief Boucle principale de l'application.
+     * 
+     * @details
+     * Cette méthode contrôle le cycle de vie principal de l'application.
+     * Elle gère l'affichage des menus, la saisie des utilisateurs, l'exécution des actions
+     * associées aux choix utilisateurs, ainsi que les éventuels retours ou navigations.
+     * 
+     * La méthode ne prend aucun paramètre et ne retourne rien ; elle maintient l'application active
+     * tant qu'un état de sortie n'est pas atteint (par exemple, fermeture de session ou commande "quitter").
+     */
    void mainLoop () ; 
-   // authentification ? 
-    bool signInUser (string key ) ; // fait  
-    void signOutUser() ;  // fait
-    string menuToString(Menu menu) ; // fait 
-    string loadMenu() ;  // fait 
+
+
+    /**
+     * @brief Authentifie un utilisateur à partir d'une clé d'identification.
+     * 
+     * @param key Clé d'identification unique associée à un utilisateur (ex : token, identifiant chiffré).
+     * @return true Si l'utilisateur est authentifié avec succès.
+     * @return false Si la clé est invalide ou que l'authentification échoue.
+     * 
+     * @details
+     * Cette méthode permet de valider l'accès d'un utilisateur en vérifiant la clé fournie.
+     * Une fois connecté, l'utilisateur peut accéder aux fonctionnalités restreintes de l'application.
+     * En cas d’échec, l’application peut afficher un message d’erreur ou demander une nouvelle saisie.
+     */
+    bool signInUser (string key ) ;
+
+
+
+    /**
+     * @brief Déconnecte l'utilisateur actuellement authentifié.
+     * 
+     * @details
+     * Cette méthode met fin à la session de l'utilisateur connecté,
+     * réinitialise les données de session, et empêche tout accès aux fonctions protégées
+     * jusqu’à ce qu’un nouvel utilisateur soit authentifié.
+     * Elle peut également rediriger vers le menu principal ou de connexion.
+     */
+    void signOutUser() ;
+
+
+    /**
+     * @brief Convertit un objet Menu en une chaîne de caractères lisible.
+     * 
+     * @param menu Objet Menu représentant un ensemble d’options ou d’étapes de navigation.
+     * @return string Représentation textuelle du menu, prête à être affichée à l’utilisateur.
+     * 
+     * @details
+     * Cette méthode transforme un objet de type Menu en une version affichable,
+     * généralement composée de titres, de numéros d’option, et de descriptions associées.
+     * Elle est essentielle pour fournir une interface en ligne de commande claire et structurée.
+     */
+    string menuToString(Menu menu) ;
+
+
+
+        /**
+     * @brief Charge le menu actuel ou initial de l'application.
+     * 
+     * @return string Contenu textuel du menu à afficher à l'utilisateur.
+     * 
+     * @details
+     * Cette méthode initialise ou récupère dynamiquement le contenu du menu à afficher
+     * en fonction de l'état de l'application (utilisateur connecté, rôle, progression, etc.).
+     * Elle est généralement appelée au début ou après chaque action utilisateur pour mettre à jour l’interface.
+     */
+    string loadMenu() ; 
+
+
 
     void runTest_AverageCalculation() ; 
     /**
@@ -141,7 +206,7 @@ protected:
         }
     } ; 
 
-    // vérifier quelles sont les fonctionnalités auxquelles les provider ont accés 
+    
     Menu ProviderMenu = {
         "Air Cleaner Provider Menu " , 
         {
@@ -150,7 +215,7 @@ protected:
         }
     };
 
-    // vérifier quelles sont les fonctionnalités auxquelles les PrivateIndividual ont accés 
+  
 
     Menu PrivateIndividualMenu = {
         "Private Individual Menu" , 
