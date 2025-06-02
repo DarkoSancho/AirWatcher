@@ -44,16 +44,76 @@ public:
 //----------------------------------------------------- Méthodes publiques
     User GetUser(string key);
 
-    Sensor getSensor(string sensorId);
     
+        /**
+     * @brief Récupère un capteur à partir de son identifiant.
+     * 
+     * @param sensorId Identifiant unique du capteur recherché.
+     * @return Sensor Objet représentant le capteur correspondant à l'identifiant donné.
+     * 
+     * @details
+     * Cette méthode permet d'accéder à un capteur spécifique en fournissant son identifiant.
+     * Une exception peut être retournée si l'identifiant est invalide.
+     */
+    Sensor getSensor(string sensorId);
+
+
+    /**
+     * @brief Récupère l'ensemble des capteurs disponibles.
+     * 
+     * @return map<string, Sensor> Dictionnaire associant les identifiants de capteurs à leurs objets respectifs.
+     * 
+     * @details
+     * Cette méthode fournit un accès à tous les capteurs enregistrés dans les fichiers CSV fournis.
+     * Elle est utile pour effectuer des opérations globales comme le calcul de statistiques par zone ou la comparaison des capteurs .
+     */
     map<string, Sensor> getAllSensors();
 
+
+
+    /**
+     * @brief Récupère un nombre limité de mesures d'un capteur pour un attribut donné.
+     * 
+     * @param sensorId Identifiant du capteur concerné.
+     * @param count Nombre de mesures à récupérer (les plus récentes ou selon un ordre défini).
+     * @param attribute Nom de l'attribut mesuré (ex : "O3", "NO2", etc.).
+     * @return vector<Measurement> Liste de mesures correspondant au capteur et à l'attribut spécifiés.
+     * 
+     * @details
+     * Cette méthode permet de récupérer rapidement un échantillon de mesures récentes
+     * pour un capteur donné et un polluant spécifique, ce qui est utile pour l'affichage
+     * en temps réel et les calculs.
+     */
     vector<Measurement> getMeasurements(string sensorId, int count, string attribute); 
 
+
+    /**
+     * @brief Récupère toutes les mesures d’un capteur pour un attribut donné.
+     * 
+     * @param sensorId Identifiant du capteur concerné.
+     * @param attribute Nom de l'attribut mesuré (ex : "PM10", "SO2", etc.).
+     * @return vector<Measurement> Liste complète des mesures du capteur pour cet attribut.
+     * 
+     * @details
+     * Cette méthode donne accès à l’historique complet des mesures d’un capteur pour un polluant donné.
+     * Elle est particulièrement utile pour les analyses statistiques ou les comparaisons inter-capteurs.
+     */
     vector<Measurement> getMeasurements(string sensorId, string attribute) ; 
 
+
+    /**
+     * @brief Récupère tous les utilisateurs enregistrés.
+     * 
+     * @return vector<User> Liste de tous les utilisateurs présents dans le système.
+     * 
+     * @details
+     * Cette méthode permet d’accéder aux informations concernant l’ensemble des utilisateurs,
+     * ce qui peut être utile pour des opérations de gestion (vérification d'identité, attribution de capteurs, etc.)
+     * ou pour des analyses basées sur les profils d'utilisateurs (fiabilité,etc.).
+     */
     vector<User> getAllUsers();
 
+    
     Stats getData(string sensorId, Date startDate, Date EndDate, int Th03 = -1, int ThNO2 = -1, int ThSO2 = -1, int ThPM10 = -1);
     /**
      * @brief Calcule et retourne des statistiques sur les mesures d'un capteur donné sur une période spécifiée.
