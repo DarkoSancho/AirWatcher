@@ -470,12 +470,7 @@ string Controller :: loadMenu() {
 
 // Evaluation des performances
 
-//Teste la performance de la méthode de calcul de la qualité moyenne de l'air dans une zone géographique.
-// Utilise plusieurs capteurs autour d'une position fixe avec un rayon donné, et mesure le temps d'exécution
-// pour le calcul de la qualité de l'air sur une période définie.
- 
-// Paramètres : aucun (les capteurs, rayon et dates sont définis en dur)
-// Retour : aucun (affiche les résultats via la vue)
+// Teste la performance de la méthode de calcul de la qualité moyenne de l'air dans une zone géographique.
 void Controller::runTest_AverageCalculation() {
     vector<string> sensors = {"Sensor1", "Sensor8", "Sensor14"};
     Date start("2019-01-01");
@@ -486,6 +481,7 @@ void Controller::runTest_AverageCalculation() {
     view.printMessage("Radius: 5 km");
     view.printMessage("Number of tests : " + to_string(sensors.size()));
 
+    // Loop through each sensor and measure the time to retrieve statistics
     for (const string& sensorId : sensors) {
         long long time = measureExecutionTime([&]() {
             model.airQualityGeo(44.84, -0.57, start, end, 5.0);
@@ -497,11 +493,6 @@ void Controller::runTest_AverageCalculation() {
 }
 
 // Teste la performance de l’algorithme de comparaison entre capteurs.
-// Pour une liste de capteurs de référence, on compare chaque capteur à tous les autres
-// dans une période donnée et on mesure le temps d'exécution.
-
-// Paramètres : aucun (capteurs et dates codés en dur)
-// Retour : aucun (affiche les résultats via la vue)
 void Controller::runTest_SensorComparison() {
     vector<string> sensors = {"Sensor3", "Sensor17", "Sensor22"};
     Date start("2019-01-01");
@@ -514,6 +505,7 @@ void Controller::runTest_SensorComparison() {
     view.printMessage("Period: from 2019-01-01 to 2020-01-01");
     view.printMessage("Number of tests : " + to_string(sensors.size()));
 
+    // Loop through each sensor and measure the time to retrieve statistics
     for (const string& refSensor : sensors) {
         long long time = measureExecutionTime([&]() {
             vector<pair<string, double>> results = model.compareSensors(refSensor, start, end);
@@ -527,11 +519,7 @@ void Controller::runTest_SensorComparison() {
 
 
 // Teste la performance de la récupération des mesures d’un capteur pour un attribut donné.
-// Pour chaque capteur de la liste, on récupère toutes les mesures de l'attribut spécifié (par exemple "O3")
-// et on mesure le temps nécessaire.
 
-// Paramètres : aucun (capteurs et attribut définis en dur)
-// Retour : aucun (affiche les résultats via la vue)
 void Controller::runTestSensorReadings() {
     vector<string> sensors = {"Sensor1", "Sensor8", "Sensor14"};
     Date start("2019-01-01");
@@ -542,6 +530,7 @@ void Controller::runTestSensorReadings() {
     view.printMessage("Thresholds of 50 for all pollutants");
     view.printMessage("Number of tests : " + to_string(sensors.size()));
 
+    // Loop through each sensor and measure the time to retrieve statistics
     for (const string& id : sensors) {
         int count = 0;
         long long time = measureExecutionTime([&]() {
