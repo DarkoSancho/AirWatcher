@@ -510,28 +510,20 @@ vector<Measurement> Model::getMeasurements(string sensorId, string attribute) {
 
 
 // This method calculates a similarity score between two sensors based on an average of their measurements.
-// It calculates and compares these averages for each of four attributes: O3, NO2, SO2, and PM10,
-// and only considers values within the given date range.
-// The final score is normalized between 0 and 100 (the closer to 100, the more similar).
-// Parameters:
-//   referenceSensor  The reference sensor to compare against.
-//   compareSensor    The sensor being compared to the reference sensor.
-//   startDate        The start date of the time interval for measurements to consider.
-//   endDate          The end date of the time interval for measurements to consider.
-// return : A similarity score (double) between 0.0 and 100.0. A value close to 100 indicates high similarity.
 double Model::calculateSimilarity(const Sensor& referenceSensor, const Sensor& compareSensor, const Date& startDate, const Date& endDate)
 {
     const string attributes[] = {"O3", "NO2", "SO2", "PM10"};
-    double totalDifference = 0.0;
-    int attributeCount = 0;
+    double totalDifference = 0.0;   // Sum of differences across attributes
+    int attributeCount = 0;         // Number of attributes with valid data for comparison (0 or 4)
 
     for (const string& attribute : attributes)
     {
         vector<Measurement> referenceMeasurements = this->getMeasurements(referenceSensor.getSensorId(), -1, attribute);
         vector<Measurement> compareMeasurements = this->getMeasurements(compareSensor.getSensorId(), -1, attribute);
-        double refSum = 0.0, cmpSum = 0.0;
-        int refCount = 0, cmpCount = 0;
+        double refSum = 0.0, cmpSum = 0.0;    // Sums of measurement values within the date range
+        int refCount = 0, cmpCount = 0;       // Counters for valid measurements within date range
 
+        // Skip attribute if either sensor has no measurements
         if (referenceMeasurements.empty() || compareMeasurements.empty()) {
             continue;
         }
@@ -556,7 +548,7 @@ double Model::calculateSimilarity(const Sensor& referenceSensor, const Sensor& c
         if (refCount > 0 && cmpCount > 0) {
             double refAvg = refSum / refCount;
             double cmpAvg = cmpSum / cmpCount;
-            double diff = abs(refAvg - cmpAvg);
+            double diff = abs(refAvg - cmpAvg); // Absolute difference between averages
             totalDifference += diff;
             attributeCount++;
         }
@@ -567,32 +559,30 @@ double Model::calculateSimilarity(const Sensor& referenceSensor, const Sensor& c
         return 0.0;  
     }
 
+    // Compute average difference across all compared attributes
     double averageDifference = totalDifference / attributeCount; // attributCount vaut toujours 4
 
+    // Return a similarity score normalized between 0 and 100
+    // The formula ensures closer averages yield scores near 100  
     return 100.0 / (1.0 + averageDifference);  
 }
 
 
 
-// This method compares a given sensor to all other loaded sensors and computes a similarity score
-// based on measurements from a defined date range. It returns a sorted list of sensor IDs
-// with their similarity scores, showing only the top 5 most similar sensors.
-// Parameters:
-//   referenceSensorID  The ID of the reference sensor.
-//   startDate          The start date of the time interval for measurements to consider.
-//   endDate            The end date of the time interval for measurements to consider.
-// return : A vector of pairs (sensor ID, similarity score), sorted by similarity (highest first).
-//          Contains up to 5 sensors most similar to the reference.
+// This method compares a given sensor to all other loaded sensors and computes a similarity score.
 vector<pair<string, double>> Model :: compareSensors( const string& referenceSensorID, const Date& startDate,  const Date& endDate)
 {
     vector<pair<string, double>> similarityScores; // A vector allows us to sort sensors by similarity score
 
     Sensor referenceSensor = getSensor(referenceSensorID);
+    
+    // Check if the reference sensor is not empty; if not, output an error and return empty results
     if (referenceSensor.getSensorId().empty()) {
         cerr << "Reference sensor not found!" << endl;
         return similarityScores;
     }
 
+    // Iterate over all sensors in the collection
     for (map<string, Sensor>::const_iterator it = sensors.begin(); it != sensors.end(); ++it)
     {
         const string& sensorID = it->first;
@@ -605,6 +595,7 @@ vector<pair<string, double>> Model :: compareSensors( const string& referenceSen
         similarityScores.push_back(pair<string, double>(sensorID, score));
     }
 
+    // Sort the similarity scores in descending order (highest similarity first)
     sort(similarityScores.begin(), similarityScores.end(),
          [](const pair<string, double>& a, const pair<string, double>& b) {
              return a.second > b.second;
