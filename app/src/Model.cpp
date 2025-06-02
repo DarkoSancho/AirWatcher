@@ -172,10 +172,10 @@ bool Model::loadCleaners(string pathCleanerCSV)
         if (row.size() >= 5) { // on vérifie que la ligne contient au moins 5 champs (ID, latitude, longitude, début, fin).
             Cleaner cleaner;
             cleaner.setCleanerId(row[0]);
-            cleaner.setLatitude(stof(row[1])); // "stof" convertie une string en float
+            cleaner.setLatitude(stof(row[1])); 
             cleaner.setLongitude(stof(row[2])); 
-            cleaner.setStartTime(row[3]); // NAM : Asmae je dois changer ça
-            cleaner.setEndTime(row[4]); // NAM : Asmae je dois changer ça avec la méthode date de Tom 
+            cleaner.setStartTime(row[3]); 
+            cleaner.setEndTime(row[4]); 
             this->cleaners[row[0]] = cleaner;
         }
     }
@@ -203,12 +203,12 @@ bool Model::loadSensorsData(string pathSensorCSV, string pathMeasureCSV, string 
             row.push_back(line.substr(0, pos));
             line.erase(0, pos + 1);
         }
-        row.push_back(line); // Ajouter le dernier champ
+        row.push_back(line); 
 
         // Créer un objet Sensor
         Sensor sensor;
         sensor.setSensorId(row[0]);
-        sensor.setLatitude(stof(row[1])); // "stof" convertie une string en float
+        sensor.setLatitude(stof(row[1])); 
         sensor.setLongitude(stof(row[2]));
         sensor.setFlagged(false);
 
@@ -409,7 +409,7 @@ vector<Measurement> Model::getAllMeasurementsForAttribute(string attribute)
 }
 
 
-//Mathode qui renvoie un sensor grâce à son ID depuis la map
+//Méthode qui renvoie un sensor grâce à son ID depuis la map
 Sensor Model::getSensor(string sensorId){
     if (this->sensors.find(sensorId) == this->sensors.end())
     {
@@ -452,7 +452,6 @@ map<string, Sensor> Model::getAllSensors()
 }
 
 
-//------- ***** ça commence ici Yassine pour te repérer *****----------------
 
 // Méthode qui renvoie les measurements associées à un capteur donné, pour un attribut donné (O2,NO2,SO2,PM10), si on ne veut pas de count pardéfault cela vaut -1
 vector<Measurement> Model::getMeasurements(string sensorId, int count, string attribute)
@@ -563,7 +562,7 @@ double Model::calculateSimilarity(const Sensor& referenceSensor, const Sensor& c
         }
     }
 
-    // si pas de donnÃ©es exploitables
+    // si pas de donnees exploitables
     if (attributeCount == 0) {
         return 0.0;  
     }
