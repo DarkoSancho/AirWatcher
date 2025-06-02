@@ -45,10 +45,67 @@ public:
     void signOutUser() ;  // fait
     string menuToString(Menu menu) ; // fait 
     string loadMenu() ;  // fait 
-    void runTest_AverageCalculation() ; 
-    void runTest_SensorComparison() ; 
-    void runTestSensorReadings() ; 
 
+    void runTest_AverageCalculation() ; 
+    /**
+     * @brief Evaluates the performance of the average air quality calculation method within a geographic area.
+     * 
+     * @return void This method does not return a value; results are displayed through the view.
+     * 
+     * @details
+     * This method tests the execution time of calculating average air quality within a specified radius
+     * around a fixed geographic position using multiple sensors.
+     * 
+     * The test is performed over a predefined time period using hardcoded parameters:
+     *   - Sensor positions
+     *   - Geographic radius
+     *   - Start and end dates
+     * 
+     * The purpose is to assess the efficiency and speed of the air quality computation algorithm.
+     * Results (e.g., duration, ...) are printed or displayed via the application’s view component.
+    */
+
+    void runTest_SensorComparison() ; 
+    /**
+     * @brief Evaluates the performance of the sensor comparison algorithm.
+     * 
+     * @return void This method does not return a value; results are displayed through the view.
+     * 
+     * @details
+     * This method tests the execution time of the algorithm that compares sensors based on their measurements.
+     * 
+     * For a predefined list of reference sensors, each sensor is compared to all other sensors
+     * over a fixed time period. The goal is to assess the efficiency of the comparison process.
+     * 
+     * The test uses hardcoded parameters:
+     *   - List of reference sensors
+     *   - Start and end dates for the comparison period
+     * 
+     * Results such as execution time are displayed via the application’s view component.
+    */
+
+    void runTestSensorReadings() ; 
+    /**
+     * @brief Evaluates the performance of retrieving statistical data for multiple sensors over a fixed period.
+     * 
+     * @return void This method does not return a value; results are displayed through the view.
+     * 
+     * @details
+     * This method measures the execution time required to compute air quality statistics
+     * for a predefined list of sensors using the `getData` method from the model.
+     * 
+     * For each sensor:
+     *   - Measurements are retrieved and analyzed over a fixed time period (from 2019-01-01 to 2020-01-01).
+     *   - Thresholds for all pollutants (O3, NO2, SO2, PM10) are set to 50.
+     *   - The execution time for computing the statistics is recorded and displayed.
+     * 
+     * The following are hardcoded:
+     *   - Sensor IDs: {"Sensor1", "Sensor8", "Sensor14"}
+     *   - Time period: from 2019-01-01 to 2020-01-01
+     *   - Thresholds: 50 for all pollutants
+     * 
+     * Results (sensor ID and execution time in milliseconds) are printed via the view.
+    */
     
 template<typename Func>
 long long measureExecutionTime(Func functionToTest) {
