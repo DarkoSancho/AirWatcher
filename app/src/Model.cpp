@@ -510,8 +510,8 @@ vector<Measurement> Model::getMeasurements(string sensorId, string attribute) {
 
 
 
-// This method calculates a similarity score between two sensors based on their recent measurements.
-// It compares up to 100 recent values for each of four attributes: O3, NO2, SO2, and PM10,
+// This method calculates a similarity score between two sensors based on an average of their measurements.
+// It calculates and compares these averages for each of four attributes: O3, NO2, SO2, and PM10,
 // and only considers values within the given date range.
 // The final score is normalized between 0 and 100 (the closer to 100, the more similar).
 // Parameters:
@@ -576,7 +576,7 @@ double Model::calculateSimilarity(const Sensor& referenceSensor, const Sensor& c
 
 
 // This method compares a given sensor to all other loaded sensors and computes a similarity score
-// based on recent measurements and a defined date range. It returns a sorted list of sensor IDs
+// based on measurements from a defined date range. It returns a sorted list of sensor IDs
 // with their similarity scores, showing only the top 5 most similar sensors.
 // Parameters:
 //   referenceSensorID  The ID of the reference sensor.
